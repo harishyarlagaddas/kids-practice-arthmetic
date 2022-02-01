@@ -1,0 +1,43 @@
+.contentSectionMain {
+    width: auto;
+    height: fit-content;
+    margin: 10px;
+    background-color: white;
+    border-radius: 25px;
+    display: block;
+}
+
+.title {
+    height: 50px;
+    font-size: 30px;
+    color: #fcc603;
+    margin: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid #fcc603;
+}
+
+.gridItemMain {
+    /* margin: 10px; */
+    padding-left: 10px;
+    margin-top:0px;
+}
+
+.contentListSection {
+    padding-bottom: 20px;
+    font-size: 30px;
+}
+
+.contentListItem {
+    font-size: 20px;
+    color: green;
+    margin: 10px;
+    overflow-wrap: break-word;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.contentListItem:active {
+    text-decoration: underline;
+}

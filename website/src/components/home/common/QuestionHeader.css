@@ -1,0 +1,13 @@
+.header {
+    height: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #fcc603;
+  }
+  
+  .headerItem {
+    font-size: 40px;
+    color: white;
+    padding: 10px;
+  }

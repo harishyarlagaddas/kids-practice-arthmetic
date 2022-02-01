@@ -1,0 +1,95 @@
+.loginComponentStyle {    
+    width: 30%;
+    /* height: 300px; */
+	margin: 0 auto;
+	margin-top: 100px;
+	text-align: center;
+}
+
+.formStyle {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.inputTextStyle {
+	height: 36px;
+	width: 80%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.inputButtonStyle {
+	/* height: 36px; */
+	width: 80%;
+	font-size: x-large;
+	background: #fcc603;
+	color: #ffffff;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.errorTextStyle {
+	font-size: medium;
+	color: red;
+	margin-top: 5dp;
+}
+
+.signInContainerStyle {
+	height: 18px;
+	text-align: center;
+	width: 80%;
+	display: flex;
+	flex-direction: row;
+	margin: auto;
+}
+
+.forgotPasswordStyle {
+	width: 50%;
+	color: blue;
+}
+
+.createAccountStyle {
+	width: 50%;
+	color: blue;
+}
+
+.createAccountStyle:active .createAccountStyle:hover{
+	text-decoration: underline;
+}
+
+.loginProgressTextStyle {
+	font-size: large;
+	color: blue;
+	text-align: center;
+	line-height: 250px;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.loginProcessing {
+	border: 16px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 16px solid #fcc603;
+	border-right: 16px solid #669900;
+	border-bottom: 16px solid #fcc603;
+	border-left: 16px solid #669900;
+	width: 120px;
+	height: 120px;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+	position: absolute;
+  	left: 45%;
+  	top: 40%;
+  }
+  
+  @-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
