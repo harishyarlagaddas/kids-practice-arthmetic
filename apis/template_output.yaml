@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'practice-my-kid-apis
+
+  Sample SAM Template for practice-my-kid-apis
+
+  '
+Globals:
+  Function:
+    Timeout: 30
+Resources:
+  PracticeMyKidFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://harish-deploy-artifacts/lambda/practice-my-kid/b207d65b4f5708804ba7fd0310e40202
+      Description: PracticeMyKid api endpoints of PracticeMyKid application
+      Handler: app.lambda_handler
+      Runtime: python3.6
+      MemorySize: 128
+      Role: arn:aws:iam::334612759319:role/practice-my-kid
+      Tags:
+        Name: practice-my-kid-apis
+      AutoPublishAlias: Production
+      Events:
+        postApi:
+          Type: Api
+          Properties:
+            Path: /practice-my-kid/{api+}
+            Method: post
+        getApi:
+          Type: Api
+          Properties:
+            Path: /practice-my-kid/{api+}
+            Method: get
+      DeploymentPreference: null
