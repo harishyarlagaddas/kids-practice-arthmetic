@@ -5,6 +5,9 @@ import storage from 'redux-persist/lib/storage'
 import { loginMiddleware } from "../middleware/loginMiddleware";
 import registrationReducer from "../reducers/registrationReducer";
 import { registrationMiddleware } from "../middleware/registrationMiddleware";
+import accountReducer from "../reducers/accountReducer";
+import { accountMiddleware } from "../middleware/accountMiddleware";
+import appReducer from "../reducers/appReducer";
 
 function configureStore(initialState = {}) {
     
@@ -22,11 +25,13 @@ function configureStore(initialState = {}) {
 
     const rootReducer = combineReducers( {
         login: persistReducer(loginPersistConfig, loginReducer),
-        registration: registrationReducer
+        registration: registrationReducer,
+        account: accountReducer,
+        app: appReducer
     })
 
     const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
-    const middlewareEnhancer = applyMiddleware(loginMiddleware, registrationMiddleware)
+    const middlewareEnhancer = applyMiddleware(loginMiddleware, registrationMiddleware, accountMiddleware)
 
     let store = createStore(persistedReducer, middlewareEnhancer)
     let persistor = persistStore(store)

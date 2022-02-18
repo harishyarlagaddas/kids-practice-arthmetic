@@ -1,3 +1,7 @@
+/**
+ * We are not using the methods defined in this file. Because we are not using loginSlice implementation, we are defining the login middleware to do the 
+ * login tasks. Leaving this file just for the reference..
+ */
 import axios from "axios"
 // import { accessTokenInvalid, accessTokenValid, loginFailure, loginRequest, loginResponse } from "./loginSlice"
 import * as actions from '../../actions/actions'

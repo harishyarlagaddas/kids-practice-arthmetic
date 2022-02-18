@@ -5,6 +5,8 @@ from json_keys import *
 from error_codes import *
 from dynamo_keys import *
 from consts import *
+from datetime import datetime
+from utils import *
 import boto3
 
 
@@ -32,8 +34,7 @@ class ValidateAccessTokenRequest():
 
         accessToken = body[JSON_KEY_ACCESS_TOKEN]
 
-        dynamoUtils = DynamoUtils()
-        item = dynamoUtils.getItem(DYNAMO_TABLE_NAME_ACCESS_TOKENS, key={DYNAMO_KEY_ACCESS_TOKEN: accessToken})
+        item = get_access_token(accessToken)
 
         if not item:
             retVal[JSON_KEY_IS_SUCCESS] = False
@@ -41,8 +42,22 @@ class ValidateAccessTokenRequest():
             retVal[JSON_KEY_ERROR_DESCRIPTION] = VALIDATE_ACCESS_TOKEN_ERROR_MESSAGE_INVALID_ACCESS_TOKEN
             return HTTP_STATUS_CODE_RESOURCE_NOT_FOUND, retVal
 
-        retVal[JSON_KEY_IS_SUCCESS] = True
-        retVal[JSON_KEY_MESSAGE] = VALIDATE_ACCESS_TOKEN_SUCCESS_MESSAGE
+        expireAt = item[DYNAMO_KEY_EXPIRE_AT].to_integral_value()
+        refreshCount = item[DYNAMO_KEY_ACCESS_TOKEN_REFRESH_COUNT]
+        currentTime = int(datetime.utcnow().timestamp())
+        differenceInSeconds = expireAt - currentTime
+        if differenceInSeconds <= ACCESS_TOKEN_REFRESH_TIME_LIMIT and refreshCount <= ACCESS_TOKEN_REFRESH_COUNT :
+            accessToken = create_access_token(userId=item[DYNAMO_KEY_USER_ID], refresh_count=refreshCount)
+            retVal[JSON_KEY_IS_SUCCESS] = True
+            retVal[JSON_KEY_ACCESS_TOKEN] = accessToken
+        elif differenceInSeconds > ACCESS_TOKEN_REFRESH_TIME_LIMIT :
+            retVal[JSON_KEY_IS_SUCCESS] = True
+            retVal[JSON_KEY_ACCESS_TOKEN] = item[DYNAMO_KEY_ACCESS_TOKEN]
+        else :
+            retVal[JSON_KEY_IS_SUCCESS] = False
+            retVal[JSON_KEY_ERROR_CODE] = VALIDATE_ACCESS_TOKEN_ERROR_CODE_INVALID_ACCESS_TOKEN
+            retVal[JSON_KEY_ERROR_DESCRIPTION] = VALIDATE_ACCESS_TOKEN_ERROR_MESSAGE_INVALID_ACCESS_TOKEN
+            return HTTP_STATUS_CODE_RESOURCE_NOT_FOUND, retVal
         
         return HTTP_STATUS_CODE_SUCCESS, retVal
 

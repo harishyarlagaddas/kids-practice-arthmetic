@@ -1,91 +1,96 @@
 import React, { useEffect, useState } from 'react'
 import {Helmet} from 'react-helmet';
-import AdditionHandler from './addition/AdditionHandler';
-import AdditionSection from './addition/AdditionSection'
-import DivisionHandler from './division/DivisionHandler';
-import DivisionSection from './division/DivisionSection';
-import MultiplicationHandler from './multiplication/MultiplicationHandler';
-import MultiplicationSection from './multiplication/MultiplicationSection';
-import SubtractionHandler from './subtraction/SubtractionHandler';
-import SubtractionSection from './subtraction/SubtractionSection';
+import OperationHandler from './OperationHandler';
 import './Home.css'
-import { accessToken } from '../../features/login/loginSlice';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { OPERATION_TYPE_ADDITION, OPERATION_TYPE_DIVISION, OPERATION_TYPE_MULTIPLICATION, OPERATION_TYPE_SUBTRACTION, OPERATOR_ADDITION, OPERATOR_DIVISION, OPERATOR_MULTIPLICATION, OPERATOR_SUBTRACTION } from '../../constants/consts';
+import { loggedIn } from '../../reducers/loginReducer';
+import { clearStateAction } from '../../actions/actions';
+import ContentSection from './ContentSection';
+
+const NUM_OF_QUESTIONS = 20
 
 function Home() {
-    const [screen, setScreen] = useState(0)
-    const [digits, setDigits] = useState(1)
-    const navigate = useNavigate();
-    const token = useSelector(accessToken)
-    console.log('token: '+token)
+    const [operation, setOperation] = useState('')
+    const [operand1MaxVal, setOperand1MaxVal] = useState(0)
+    const [operand2MaxVal, setOperand2MaxVal] = useState(0)
+
+    const dispatch = useDispatch();
+    const isLoggedIn = useSelector(loggedIn)
     
-    if (screen === 1) {
-        return renderAdditionScreen(digits, setScreen, setDigits);
-    } else if (screen === 2) {
-        return renderSubtractionScreen(digits, setScreen, setDigits);
-    } else if (screen === 3) {
-        return renderMultiplicationScreen(digits, setScreen, setDigits);
-    } else if (screen === 4) {
-        return renderDivisionScreen(digits, setScreen, setDigits);
+    //Clear the states
+    dispatch(clearStateAction())
+
+    if (!isLoggedIn) {
+        return <GoToLogin />
+    } else if (operation === OPERATION_TYPE_ADDITION) {
+        return renderAdditionScreen(setOperation, operand1MaxVal, operand2MaxVal);
+    } else if (operation === OPERATION_TYPE_SUBTRACTION) {
+        return renderSubtractionScreen(setOperation, operand1MaxVal, operand2MaxVal);
+    } else if (operation === OPERATION_TYPE_MULTIPLICATION) {
+        return renderMultiplicationScreen(setOperation, operand1MaxVal, operand2MaxVal);
+    } else if (operation === OPERATION_TYPE_DIVISION) {
+        return renderDivisionScreen(setOperation, operand1MaxVal, operand2MaxVal);
     } else {
-        return renderHomeScreen(token, setScreen, setDigits, navigate);
+        return renderHomeScreen(setOperation, setOperand1MaxVal, setOperand2MaxVal);
     }
 }
 
-function renderHomeScreen(token, setScreen, setDigits, navigate) {
-    // let token = useSelector(accessToken)
-    console.log('accesstoken: '+token)
-    if (token) {
-        return (
-            <div >
-                <div className="contentMain">
-                    <Helmet>
-                        <style>{'body { background-color: #E9E9E9; }'}</style>
-                    </Helmet>
-                    <AdditionSection 
-                        handleAddition={
-                            (digits) => {
-                                setDigits(digits)
-                                setScreen(1)
-                            }
-                        }
-                    />
-                    
-                    <SubtractionSection 
-                        handleSubtraction={
-                            (digits) => {
-                                setDigits(digits)
-                                setScreen(2)
-                            }
-                        }
-                    />
-
-                    <MultiplicationSection 
-                        handleMultiplication={
-                            (digits) => {
-                                setDigits(digits)
-                                setScreen(3)
-                            }
-                        }
-                    />
-
-                    <DivisionSection 
-                        handleDivision={
-                            (digits) => {
-                                setDigits(digits)
-                                setScreen(4)
-                            }
-                        } 
-                    />
-                </div>
-            </div>
-            
-        )
-    } else {
-        return <GoToLogin />
-    }
+function renderHomeScreen(setOperation, setOperand1MaxVal, setOperand2MaxVal) {
     
+    return (
+        <div>
+            <div className="contentMain">
+                <Helmet>
+                    <style>{'body { background-color: #E9E9E9; }'}</style>
+                </Helmet>
+                <ContentSection 
+                    operation = {OPERATION_TYPE_ADDITION}
+                    handleOperation = {
+                        (operand1MaxValue, operand2MaxValue) => {
+                            setOperand1MaxVal(operand1MaxValue)
+                            setOperand2MaxVal(operand2MaxValue)
+                            setOperation(OPERATION_TYPE_ADDITION)
+                        }
+                    }
+                />
+                
+                <ContentSection
+                    operation = {OPERATION_TYPE_SUBTRACTION}
+                    handleOperation = {
+                        (operand1MaxValue, operand2MaxValue) => {
+                            setOperand1MaxVal(operand1MaxValue)
+                            setOperand2MaxVal(operand2MaxValue)
+                            setOperation(OPERATION_TYPE_SUBTRACTION)
+                        }
+                    }
+                />
+
+                <ContentSection
+                    operation = {OPERATION_TYPE_MULTIPLICATION} 
+                    handleOperation = {
+                        (operand1MaxValue, operand2MaxValue) => {
+                            setOperand1MaxVal(operand1MaxValue)
+                            setOperand2MaxVal(operand2MaxValue)
+                            setOperation(OPERATION_TYPE_MULTIPLICATION)
+                        }
+                    }
+                />
+
+                <ContentSection
+                    operation = {OPERATION_TYPE_DIVISION} 
+                    handleOperation = {
+                        (operand1MaxValue, operand2MaxValue) => {
+                            setOperand1MaxVal(operand1MaxValue)
+                            setOperand2MaxVal(operand2MaxValue)
+                            setOperation(OPERATION_TYPE_DIVISION)
+                        }
+                    } 
+                />
+            </div>
+        </div>
+    )
 }
 
 function GoToLogin() {
@@ -97,64 +102,72 @@ function GoToLogin() {
     return (<div></div>)
 }
 
-function renderAdditionScreen(digits, setScreen, setDigits) {
+function renderAdditionScreen(setOperation, operand1, operand2) {
     return (
         <div>
-            <AdditionHandler 
-                totalQuestions="10" 
-                digits={digits} 
+            <OperationHandler 
+                totalQuestions={NUM_OF_QUESTIONS} 
+                operand1MaxVal={operand1}
+                operand2MaxVal={operand2} 
+                operator={OPERATOR_ADDITION}
+                operation={OPERATION_TYPE_ADDITION}
                 onHomeButtonPress={
                     () => {
-                        setScreen(0)
-                        setDigits(0)
+                        setOperation('')
                     }
                 } />
         </div>
     )
 }
 
-function renderSubtractionScreen(digits, setScreen, setDigits) {
+function renderSubtractionScreen(setOperation, operand1, operand2) {
     return (
         <div>
-            <SubtractionHandler 
-                totalQuestions="10" 
-                digits={digits} 
+            <OperationHandler 
+                totalQuestions={NUM_OF_QUESTIONS} 
+                operand1MaxVal={operand1}
+                operand2MaxVal={operand2}
+                operator={OPERATOR_SUBTRACTION}
+                operation={OPERATION_TYPE_SUBTRACTION}
                 onHomeButtonPress={
                     () => {
-                        setScreen(0)
-                        setDigits(0)
+                        setOperation('')
                     }
                 }/>
         </div>
     )
 }
 
-function renderMultiplicationScreen(digits, setScreen, setDigits) {
+function renderMultiplicationScreen(setOperation, operand1, operand2) {
     return (
         <div>
-            <MultiplicationHandler 
-                totalQuestions="10" 
-                digits={digits} 
+            <OperationHandler 
+                totalQuestions={NUM_OF_QUESTIONS}
+                operand1MaxVal={operand1}
+                operand2MaxVal={operand2}
+                operator={OPERATOR_MULTIPLICATION}
+                operation={OPERATION_TYPE_MULTIPLICATION}
                 onHomeButtonPress={
                     () => {
-                        setScreen(0)
-                        setDigits(0)
+                        setOperation('')
                     }
                 }/>
         </div>
     )
 }
 
-function renderDivisionScreen(digits, setScreen, setDigits) {
+function renderDivisionScreen(setOperation, operand1, operand2) {
     return (
         <div>
-            <DivisionHandler 
-                totalQuestions="10" 
-                digits={digits} 
+            <OperationHandler 
+                totalQuestions={NUM_OF_QUESTIONS}
+                operand1MaxVal={operand1}
+                operand2MaxVal={operand2}
+                operator={OPERATOR_DIVISION}
+                operation={OPERATION_TYPE_DIVISION}
                 onHomeButtonPress={
                     () => {
-                        setScreen(0)
-                        setDigits(0)
+                        setOperation('')
                     }
                 }/>
         </div>

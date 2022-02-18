@@ -2,14 +2,17 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { registrationClearStateAction, registrationRequestAction } from '../../actions/actions'
+import { clearStateAction, registrationRequestAction } from '../../actions/actions'
 import { registrationError, registrationInProgress, registrationSuccess } from '../../reducers/registrationReducer'
+import { isValidEmail } from '../../utils/utils'
+import Progressbar from '../progress-bar/Progressbar'
 import './registration.css'
 
 function RegistrationLayout() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [kidsName, setKidsName] = useState('')
     const [error, setError] = useState('')
     const serverError = useSelector(registrationError)
     const dispatch = useDispatch()
@@ -31,7 +34,7 @@ function RegistrationLayout() {
 
                     <input
                         className='registrationInputTextStyle'
-                        type='text'
+                        type='password'
                         placeholder='Password'
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
@@ -39,10 +42,18 @@ function RegistrationLayout() {
 
                     <input
                         className='registrationInputTextStyle'
-                        type='text'
+                        type='password'
                         placeholder='Confirm Password'
                         value={confirmPassword}
                         onChange={(event) => setConfirmPassword(event.target.value)}
+                    />
+
+                    <input
+                        className='registrationInputTextStyle'
+                        type='text'
+                        placeholder='Name of the kid'
+                        value={kidsName}
+                        onChange={(event) => setKidsName(event.target.value)}
                     />
 
                     <input
@@ -53,6 +64,8 @@ function RegistrationLayout() {
                             console.log('create account button onClick')
                             if (username.length == 0) {
                                 setError('Enter valid email in username section')
+                            } else if (!isValidEmail(username)) {
+                                setError('Enter the valid email address in the username section')
                             } else if (password.length == 0) {
                                 setError('Enter password in the password field.')
                             } else if (password.length < 6) {
@@ -61,8 +74,16 @@ function RegistrationLayout() {
                                 setError('Enter the same password in confirm password field')
                             } else if (password != confirmPassword) {
                                 setError('Both password and confirm passwords should match')
+                            } else if (kidsName.length == 0) {
+                                setError('Please enter the name of the Kid')
                             } else {
-                                dispatch(registrationRequestAction(username, password))
+                                dispatch(registrationRequestAction({
+                                    userName: username.toLowerCase(),
+                                    password: password,
+                                    kidsNames: [
+                                        kidsName
+                                    ]
+                                }))
                             }
                         }}
                     />
@@ -72,19 +93,10 @@ function RegistrationLayout() {
     )
 }
 
-function ProgressbarLayout() {
-    console.log('GetProgressbarLayout')
-	return (
-		<div className='registrationProcessing'>
-			
-		</div>
-	)
-}
-
 function HomePage() {
     // Clear the registration state before moving to another state..
     const dispatch = useDispatch()
-	dispatch(registrationClearStateAction())
+	dispatch(clearStateAction())
 
     console.log("MoveToHomePage")
     const navigate = useNavigate();
@@ -98,9 +110,15 @@ function HomePage() {
 export default function Registration() {
     const processing = useSelector(registrationInProgress)
     const isSuccessful = useSelector(registrationSuccess)
+    const dispatch = useDispatch()
     console.log('Registration Component')
+    useEffect(() => {
+		// Fire the event to clear the registration related states..
+		dispatch(clearStateAction())
+	}, [])
+
     if (processing) {
-        return <ProgressbarLayout />
+        return <Progressbar />
     } else if (isSuccessful) {
         return <HomePage />
     } else {

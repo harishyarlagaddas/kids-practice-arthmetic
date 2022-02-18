@@ -12,7 +12,7 @@ Resources:
   PracticeMyKidFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://harish-deploy-artifacts/lambda/practice-my-kid/b207d65b4f5708804ba7fd0310e40202
+      CodeUri: s3://harish-deploy-artifacts/lambda/practice-my-kid/1469ace21f8757323a4dd7e39c1190bb
       Description: PracticeMyKid api endpoints of PracticeMyKid application
       Handler: app.lambda_handler
       Runtime: python3.6
@@ -32,4 +32,9 @@ Resources:
           Properties:
             Path: /practice-my-kid/{api+}
             Method: get
+        optionsApi:
+          Type: Api
+          Properties:
+            Path: /practice-my-kid/{api+}
+            Method: options
       DeploymentPreference: null

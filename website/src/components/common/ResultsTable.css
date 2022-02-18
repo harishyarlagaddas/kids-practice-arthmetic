@@ -1,0 +1,27 @@
+.resultsMain {
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+.resultsTitle {
+    margin: 10px;
+    font-size: 30px;
+    text-align: center;
+    text-decoration-style: bold;
+}
+
+table, th, td {
+    border:1px solid black;
+    text-align: center;
+    vertical-align: middle;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th {
+    padding-left: 20px;
+    padding-right: 20px;
+}
