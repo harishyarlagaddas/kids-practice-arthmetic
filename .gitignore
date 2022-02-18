@@ -3,3 +3,6 @@ website/node_modules/*
 
 #ignore all the hidden files
 .*/*
+
+#ignore the build files
+website/build/*
