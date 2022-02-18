@@ -1,0 +1,33 @@
+.myResultsContainer {
+    width: 100%;
+    height: 100%;
+    background-color: #E9E9E9;
+}
+
+.myResultsTitle {
+    margin-top: 20px;
+    font-size: xx-large;
+    font-weight: bold;
+    color: #fcc603;
+    text-align: center;
+}
+
+.myResultsMain {
+    width: 100%;
+    height: 100%;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-rows: auto;
+    grid-row-gap: .5em;
+    grid-column-gap: 1em;
+    grid-auto-rows: 1fr;
+}
+
+@media screen and (max-width: 800px) {
+    .resultsSection {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }   
+}

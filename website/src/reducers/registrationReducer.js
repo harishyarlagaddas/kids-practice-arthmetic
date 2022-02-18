@@ -2,7 +2,7 @@ import {
     ACTION_TYPE_REGISTRATION_REQUEST,
     ACTION_TYPE_REGISTRATION_SUCCESS,
     ACTION_TYPE_REGISTRATION_FAILURE,
-    ACTION_TYPE_REGISTRATION_CLEAR_STATE
+    ACTION_TYPE_CLEAR_STATE
 } from '../constants/actionTypes'
 
 const initialState = {
@@ -31,9 +31,9 @@ export default function registrationReducer(state=initialState, action) {
             return Object.assign({}, state, {
                 registrationInProgress: false,
                 registrationSucessful: false,
-                registrationErrorMessage: action.errorMsg
+                registrationErrorMessage: action.response.errorDescription
             })
-        case ACTION_TYPE_REGISTRATION_CLEAR_STATE:
+        case ACTION_TYPE_CLEAR_STATE:
             return Object.assign({}, state, {
                 registrationInProgress: false,
                 registrationSucessful: false,

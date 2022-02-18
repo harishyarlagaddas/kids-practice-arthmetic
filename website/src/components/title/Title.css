@@ -1,9 +1,96 @@
-.titleMain {
+.titleHeaderContainer {
     width: 100%;
     height: 50px;
     background-color: #fcc603;
-    text-align: center;
-    font-size: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.dummyLeft {
+    width: 200px;
+}
+
+.homeImage {
+    width: 50px;
+    height: 40px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.titleText {
+    margin: 0 auto;
+    font-size: 40px;
     color: white;
     font-weight: bold;
+    text-align: center;
+    line-height: 50px;
+}
+
+.accountInfo {
+    width: 200px;
+    float: right;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.accountName {
+    font-size: x-large;
+    font-weight: bold;
+    border-radius: 50%;
+    background-color: white;
+    color: #fcc603;
+    padding: 5px;
+    margin-top: 5px;
+    margin-left: auto;
+}
+
+.accountOptions {
+    width: 200px;
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #fcc603;
+    color: white;
+    align-self: flex-end;
+    border: 1px solid white;
+}
+
+@media screen and (max-width: 800px) {
+    .titleHeaderContainer {
+        height: 40px;
+    }
+
+    .dummyLeft {
+        width: 100px;
+    }
+
+    .homeImage {
+        width: 40px;
+        height: 30px;
+    }
+    
+    .titleText {
+        font-size: 20px;
+        line-height: 40px;
+    }
+
+    .accountInfo {
+        width: 100px;
+    }
+
+    .accountName {
+        font-size: large;
+    }
+    
+    .accountOptions {
+        width: 100px;
+        font-size: medium;
+    }
 }

@@ -1,0 +1,34 @@
+.detailedResultsMainLayout {
+    width: 100%;
+    height: 100%;
+}
+
+.detailedResultsDescriptionLayoutContainer {
+    margin-top: 30px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.detailedResultsDescriptionLayout {
+    align-self: center;
+}
+
+.detailedResultsTitleSection {
+    font-size: x-large;
+    font-weight: bold;
+    color: #fcc603;
+}
+
+.detailedResultsTitleValue {
+    font-size: x-large;
+    font-weight: bold;
+    color: green;
+}
+
+.detailedResultsPart2 {
+    color: #fcc603;
+}

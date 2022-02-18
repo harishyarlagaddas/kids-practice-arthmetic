@@ -1,3 +1,8 @@
+/**
+ * This file is not being used. Because using the createSlice there is difficulty in making redux-persist to work. if we can get the redux-persist to work 
+ * with createSlice mentod then we can use this. Currently I am leaving this file just for the reference..
+ */
+
 import { createSlice } from "@reduxjs/toolkit";
 
 
