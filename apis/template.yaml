@@ -34,5 +34,10 @@ Resources:
           Properties:
             Path: /practice-my-kid/{api+}
             Method: get
+        optionsApi:
+          Type: Api
+          Properties:
+            Path: /practice-my-kid/{api+}
+            Method: options
       DeploymentPreference:
         #Type: Linear10PercentEvery3Minutes

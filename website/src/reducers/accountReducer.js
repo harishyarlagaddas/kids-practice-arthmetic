@@ -1,0 +1,118 @@
+import { ACTION_TYPE_ADD_NEW_TEST, ACTION_TYPE_ADD_NEW_TEST_FAILURE, ACTION_TYPE_ADD_NEW_TEST_SUCCESSFUL, ACTION_TYPE_API_CALL_IN_PROGRESS, ACTION_TYPE_CLEAR_ACCOUNT_INFORMATION, ACTION_TYPE_CLEAR_STATE, ACTION_TYPE_CLEAR_TESTS, ACTION_TYPE_GET_ALL_TESTS, ACTION_TYPE_GET_ALL_TESTS_FAILURE, ACTION_TYPE_GET_ALL_TESTS_SUCCESS, ACTION_TYPE_SELECT_KID, ACTION_TYPE_UPDATE_ACCOUNT_INFORMATION } from "../constants/actionTypes"
+import { OPERATION_TYPE_ADDITION, OPERATION_TYPE_DIVISION, OPERATION_TYPE_MULTIPLICATION, OPERATION_TYPE_SUBTRACTION } from "../constants/consts"
+
+const initialState = {
+    kidsInformation: [
+        {
+            kidsName: 'Test Kid',
+            kidsId: ''
+        }
+    ],
+    selectedKid: {
+        kidsName: 'Test Kid',
+        kidsId: ''
+    },
+    apiCallInProgress: false,
+    apiCallFailureMessage: null,
+    apiCallComplete: false,
+    tests: [],
+    lastTimeTestsRetrieved: null
+}
+
+export default function accountReducer(state=initialState, action) {
+    console.log('accountReducer action: '+action.type)
+    switch(action.type) {
+        case ACTION_TYPE_UPDATE_ACCOUNT_INFORMATION:
+            console.log(action.response)
+            return Object.assign({}, state, {
+                kidsInformation: action.response.kidsInfo
+            })
+        case ACTION_TYPE_SELECT_KID:
+            console.log(action.kidInfo)
+            return Object.assign({}, state, {
+                selectedKid: action.kidInfo
+            })
+        case ACTION_TYPE_CLEAR_ACCOUNT_INFORMATION:
+            return Object.assign({}, state, {
+                kidsInformation: null,
+                selectedKid: null,
+                tests: [],
+                lastTimeTestsRetrieved: null
+            })
+        case ACTION_TYPE_CLEAR_STATE:
+            return Object.assign({}, state, {
+                apiCallInProgress: false,
+                apiCallComplete: false,
+                apiCallFailureMessage: null
+            })
+        case ACTION_TYPE_ADD_NEW_TEST :
+            return Object.assign({}, state, {
+                apiCallInProgress: true,
+                apiCallComplete: false
+            })
+        case ACTION_TYPE_ADD_NEW_TEST_SUCCESSFUL:
+            return Object.assign({}, state, {
+                apiCallInProgress: false,
+                apiCallComplete: true,
+                tests: [...(state.tests || []), action.testInformation]
+            })
+        case ACTION_TYPE_ADD_NEW_TEST_FAILURE:
+            return Object.assign({}, state, {
+                apiCallInProgress: false,
+                apiCallComplete: true,
+                apiCallFailureMessage: action.response.errorDescription
+            })
+        case ACTION_TYPE_GET_ALL_TESTS:
+            return Object.assign({}, state, {
+                apiCallInProgress: true,
+                apiCallComplete: false
+            })
+        case ACTION_TYPE_GET_ALL_TESTS_SUCCESS:
+            return Object.assign({}, state, {
+                apiCallInProgress: false,
+                apiCallComplete: true,
+                tests: action.response.tests,
+                lastTimeTestsRetrieved: Date.now()
+            })
+        case ACTION_TYPE_GET_ALL_TESTS_FAILURE:
+            return Object.assign({}, state, {
+                apiCallInProgress: false,
+                apiCallComplete: true,
+                apiCallFailureMessage: action.response.errorDescription,
+                lastTimeTestsRetrieved: null
+            })
+        case ACTION_TYPE_CLEAR_TESTS:
+            return Object.assign({}, state, {
+                tests: [],
+                lastTimeTestsRetrieved: null
+            })
+        default:
+            return state
+    }
+}
+
+export const kidsNames = state => {
+    if (null == state.account.kidsInformation) {
+        return []
+    } else {
+        return state.account.kidsInformation.map(info => info.name)
+    }   
+}
+
+export const numOfKids = state => {
+    if (null == state.account.kidsInformation) {
+        return 0
+    } else {
+       return state.account.kidsInformation.length
+    }
+}
+export const selectedKidInfo = state => state.account.selectedKid
+export const kidsInfo = state => state.account.kidsInformation
+export const apiCallInProgress = state => state.account.apiCallInProgress
+export const apiCallComplete = state => state.account.apiCallComplete
+export const apiCallFailureMsg = state => state.account.apiCallFailureMessage
+export const lastTimeTestsRetrieved = state => state.account.lastTimeTestsRetrieved
+export const additionTests = state => state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_ADDITION})
+export const subtractionTests = state => state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_SUBTRACTION})
+export const multiplicationTests = state => state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_MULTIPLICATION})
+export const divisionTests = state => state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_DIVISION})

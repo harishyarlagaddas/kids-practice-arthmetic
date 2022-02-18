@@ -7,6 +7,7 @@ from dynamo_keys import *
 from consts import *
 from uuid import uuid4
 from datetime import datetime
+from utils import *
 import boto3
 
 
@@ -56,16 +57,9 @@ class LoginRequest:
             retVal[JSON_KEY_ERROR_DESCRIPTION] = LOGIN_ERROR_MESSAGE_INVALID_PASSWORD
             return HTTP_STATUS_CODE_UNAUTHORIZED, retVal
 
+        accessToken = create_access_token(userId=item[DYNAMO_KEY_USER_ID])
         retVal[JSON_KEY_IS_SUCCESS] = True
-        accessToken = str(uuid4())
-        timestamp = datetime.now().strftime(DATE_TIME_FORMAT_STRING)
-        userId = item[DYNAMO_KEY_USER_ID]
-        response = dynamoUtils.putItem(DYNAMO_TABLE_NAME_ACCESS_TOKENS, {
-            DYNAMO_KEY_ACCESS_TOKEN: accessToken,
-            DYNAMO_KEY_USER_ID: userId,
-            DYNAMO_KEY_CREATED_AT: timestamp,
-            DYNAMO_KEY_LAST_ACCESSED_AT: timestamp
-        })
+        retVal[JSON_KEY_KIDS_INFORMATION] = item[DYNAMO_KEY_KIDS_INFORMATION]
         retVal[JSON_KEY_ACCESS_TOKEN] = accessToken
 
         return HTTP_STATUS_CODE_SUCCESS, retVal

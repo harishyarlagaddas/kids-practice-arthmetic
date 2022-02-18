@@ -1,0 +1,60 @@
+.registrationComponentStyle {    
+    width: 30%;
+    /* height: 300px; */
+	margin: 0 auto;
+	margin-top: 100px;
+	text-align: center;
+}
+
+.registrationFormStyle {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.registrationInputTextStyle {
+	height: 36px;
+	width: 80%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.registrationErrorTextStyle {
+	font-size: medium;
+	color: red;
+	margin-top: 5dp;
+}
+
+.registrationInputButtonStyle {
+	/* height: 36px; */
+	width: 80%;
+	font-size: x-large;
+	background: #fcc603;
+	color: #ffffff;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+@-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 800px) {
+	.registrationComponentStyle {
+		width: 90%;
+		margin-top: 50px;
+	}
+
+	.registrationInputTextStyle {
+		font-size: 16px;
+	}
+	
+	input, select, textarea {
+		font-size: 16px;
+	}
+}
