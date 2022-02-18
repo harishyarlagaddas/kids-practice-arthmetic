@@ -6,3 +6,6 @@ website/node_modules/*
 
 #ignore the build files
 website/build/*
+
+#ignore the template-output yaml file which is created during deployment..
+rm apis/template_output.yaml
