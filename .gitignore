@@ -1,2 +1,5 @@
 #ignore the node modules
 website/node_modules/*
+
+#ignore all the hidden files
+.*/*
