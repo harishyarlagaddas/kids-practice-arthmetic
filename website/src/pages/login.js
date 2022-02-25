@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from "react-router-dom";
-import { loginFailureAction, loginRequestAction } from "../../actions/actions";
+import { loginFailureAction, loginRequestAction } from "../actions/actions";
 import './login.css'
-import { loggedIn, loginError, loginInProgress } from "../../reducers/loginReducer";
-import Progressbar from "../progress-bar/Progressbar";
-import { selectedKidInfo } from "../../reducers/accountReducer";
-import { isValidEmail } from "../../utils/utils";
+import { loggedIn, loginError, loginInProgress } from "../reducers/loginReducer";
+import Progressbar from "../components/progress-bar/Progressbar";
+import { selectedKidInfo } from "../reducers/accountReducer";
+import { isValidEmail } from "../utils/utils";
 
 function LoginLayout() {
     const [username, setUsername] = useState('')

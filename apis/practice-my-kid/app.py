@@ -16,6 +16,7 @@ PATH_PARAM_LOGIN = "login"
 PATH_PARAM_ACCESS_TOKEN = 'access_token'
 PATH_PARAM_REGISTRATION = 'register'
 PATH_PARAM_TEST = 'tests'
+PATH_PARAM_ADD_KID = 'add_kid'
 
 def lambda_handler(event, context):
     try:
@@ -59,6 +60,31 @@ def lambda_handler(event, context):
             statusCode, retVal = userRegistrationRequest.process(method=method, queryParams=queryParams, body=json.loads(body))
         elif (api == PATH_PARAM_TEST) :
             print('Path indicates it as Tests request')
+            if (HTTP_HEADER_AUTHORIZATION not in headers) :
+                print('There is no authorization header.')
+                statusCode = HTTP_STATUS_CODE_UNAUTHORIZED
+                retVal = {
+                    JSON_KEY_IS_SUCCESS: False,
+                    JSON_KEY_ERROR_CODE: GENERAL_ERROR_CODE_ACCESS_TOKEN_INVALID,
+                    JSON_KEY_ERROR_DESCRIPTION: GENERAL_ERROR_MESSAGE_ACCESS_TOKEN_INVALID
+                }
+            else:
+                userId = validate_access_token(headers[HTTP_HEADER_AUTHORIZATION])
+                if not userId:
+                    print('Looks like accesstoken is expired')
+                    statusCode = HTTP_STATUS_CODE_UNAUTHORIZED
+                    retVal = {
+                        JSON_KEY_IS_SUCCESS: False,
+                        JSON_KEY_ERROR_CODE: GENERAL_ERROR_CODE_ACCESS_TOKEN_INVALID,
+                        JSON_KEY_ERROR_DESCRIPTION: GENERAL_ERROR_MESSAGE_ACCESS_TOKEN_INVALID
+                    }
+                else:
+                    testsRequest = TestsRequest()
+                    if not body:
+                        body = '{}'  #Just to pass empty value of body to TestsRequest
+                    statusCode, retVal = testsRequest.process(method=method, queryParams=queryParams, body= json.loads(body), userId=userId)
+        elif (api == PATH_PARAM_ADD_KID) :
+            print('Path indicates it as Add Kid request')
             if (HTTP_HEADER_AUTHORIZATION not in headers) :
                 print('There is no authorization header.')
                 statusCode = HTTP_STATUS_CODE_UNAUTHORIZED

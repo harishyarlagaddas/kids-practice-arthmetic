@@ -33,6 +33,6 @@ def validate_access_token(accessToken) :
         return None
     
     print('validate_access_token token valid')
-    return item[DYNAMO_KEY_USER_ID]
+    return item[DYNAMO_KEY_USER_ID], item[DYNAMO_KEY_USER_NAME]
 
 

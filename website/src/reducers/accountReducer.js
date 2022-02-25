@@ -1,4 +1,19 @@
-import { ACTION_TYPE_ADD_NEW_TEST, ACTION_TYPE_ADD_NEW_TEST_FAILURE, ACTION_TYPE_ADD_NEW_TEST_SUCCESSFUL, ACTION_TYPE_API_CALL_IN_PROGRESS, ACTION_TYPE_CLEAR_ACCOUNT_INFORMATION, ACTION_TYPE_CLEAR_STATE, ACTION_TYPE_CLEAR_TESTS, ACTION_TYPE_GET_ALL_TESTS, ACTION_TYPE_GET_ALL_TESTS_FAILURE, ACTION_TYPE_GET_ALL_TESTS_SUCCESS, ACTION_TYPE_SELECT_KID, ACTION_TYPE_UPDATE_ACCOUNT_INFORMATION } from "../constants/actionTypes"
+import { 
+    ACTION_TYPE_ADD_NEW_KID, 
+    ACTION_TYPE_ADD_NEW_KID_FAILURE, 
+    ACTION_TYPE_ADD_NEW_KID_SUCCESSFUL, 
+    ACTION_TYPE_ADD_NEW_TEST, 
+    ACTION_TYPE_ADD_NEW_TEST_FAILURE, 
+    ACTION_TYPE_ADD_NEW_TEST_SUCCESSFUL,
+    ACTION_TYPE_CLEAR_ACCOUNT_INFORMATION, 
+    ACTION_TYPE_CLEAR_STATE, 
+    ACTION_TYPE_CLEAR_TESTS, 
+    ACTION_TYPE_GET_ALL_TESTS, 
+    ACTION_TYPE_GET_ALL_TESTS_FAILURE, 
+    ACTION_TYPE_GET_ALL_TESTS_SUCCESS, 
+    ACTION_TYPE_SELECT_KID, 
+    ACTION_TYPE_UPDATE_ACCOUNT_INFORMATION 
+} from "../constants/actionTypes"
 import { OPERATION_TYPE_ADDITION, OPERATION_TYPE_DIVISION, OPERATION_TYPE_MULTIPLICATION, OPERATION_TYPE_SUBTRACTION } from "../constants/consts"
 
 const initialState = {
@@ -31,6 +46,28 @@ export default function accountReducer(state=initialState, action) {
             console.log(action.kidInfo)
             return Object.assign({}, state, {
                 selectedKid: action.kidInfo
+            })
+        case ACTION_TYPE_ADD_NEW_KID:
+            console.log(action.kidsName)
+            return Object.assign({}, state, {
+                apiCallInProgress: true,
+                apiCallComplete: false,
+                apiCallFailureMessage: null
+            })
+        case ACTION_TYPE_ADD_NEW_KID_SUCCESSFUL:
+            console.log(action.response)
+            return Object.assign({}, state, {
+                apiCallInProgress: false,
+                apiCallComplete: true,
+                apiCallFailureMessage: null,
+                kidsInformation: [...(state.kidsInformation || []), action.response]
+            })
+        case ACTION_TYPE_ADD_NEW_KID_FAILURE:
+            console.log('action: '+JSON.stringify(action))
+            return Object.assign({}, state, {
+                apiCallInProgress: false,
+                apiCallComplete: true,
+                apiCallFailureMessage: action.response.errorDescription
             })
         case ACTION_TYPE_CLEAR_ACCOUNT_INFORMATION:
             return Object.assign({}, state, {
@@ -95,7 +132,7 @@ export const kidsNames = state => {
     if (null == state.account.kidsInformation) {
         return []
     } else {
-        return state.account.kidsInformation.map(info => info.name)
+        return state.account.kidsInformation.map(info => info.kidsName)
     }   
 }
 

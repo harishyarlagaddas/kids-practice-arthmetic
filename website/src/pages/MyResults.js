@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllTestsAction } from "../../actions/actions";
-import { GET_TESTS_REFRESH_INTERVAL, OPERATION_TYPE_ADDITION, OPERATION_TYPE_DIVISION, OPERATION_TYPE_MULTIPLICATION, OPERATION_TYPE_SUBTRACTION } from "../../constants/consts";
-import { apiCallInProgress, lastTimeTestsRetrieved, selectedKidInfo } from "../../reducers/accountReducer";
-import { accessToken, loggedIn } from "../../reducers/loginReducer";
-import Progressbar from "../progress-bar/Progressbar";
-import ResultsSection from "./ResultsSection";
+import { getAllTestsAction } from "../actions/actions";
+import { 
+    GET_TESTS_REFRESH_INTERVAL, 
+    OPERATION_TYPE_ADDITION, 
+    OPERATION_TYPE_DIVISION, 
+    OPERATION_TYPE_MULTIPLICATION, 
+    OPERATION_TYPE_SUBTRACTION 
+} from "../constants/consts";
+import { apiCallInProgress, lastTimeTestsRetrieved, selectedKidInfo } from "../reducers/accountReducer";
+import { accessToken, loggedIn } from "../reducers/loginReducer";
+import Progressbar from "../components/progress-bar/Progressbar";
+import ResultsSection from "../components/my-results/ResultsSection";
 import './MyResults.css'
 import { useNavigate } from "react-router-dom";
 
