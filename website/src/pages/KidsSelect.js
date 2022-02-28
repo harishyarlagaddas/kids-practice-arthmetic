@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { accessTokenInvalidAction, clearTestsAction, selectKidAction } from "../../actions/actions";
-import { kidsInfo } from "../../reducers/accountReducer";
-import { loggedIn } from "../../reducers/loginReducer";
+import { 
+    accessTokenInvalidAction, 
+    clearTestsAction, 
+    selectKidAction 
+} from "../actions/actions";
+import { kidsInfo } from "../reducers/accountReducer";
+import { loggedIn } from "../reducers/loginReducer";
 import './KidsSelect.css'
 
 export default function KidsSelect() {
@@ -36,6 +40,7 @@ export default function KidsSelect() {
                         <div 
                             className="kidsName"
                             onClick={() => {
+                                console.log(info)
                                 console.log('KidsSelect selected kid: '+info.kidsName)
                                 dispatch(selectKidAction(info))
                                 dispatch(clearTestsAction())

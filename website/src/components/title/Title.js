@@ -70,11 +70,21 @@ function Title() {
                                         onClick={ 
                                             () => {
                                                 showMenu(!menu)
-                                                navigate("my-results")
+                                                navigate("/my-results")
                                             }
                                         }
                                     >
                                         My Results
+                                    </div>
+                                    <div className="accountOptions" 
+                                        onClick={ 
+                                            () => {
+                                                showMenu(!menu)
+                                                navigate("/add-Kid")
+                                            }
+                                        }
+                                    >
+                                        Add Kid
                                     </div>
                                     {
                                         names.length > 1 ? (

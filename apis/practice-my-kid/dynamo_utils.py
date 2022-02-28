@@ -1,3 +1,4 @@
+from inspect import Attribute
 import boto3
 import time
 from botocore.exceptions import ClientError
@@ -27,10 +28,16 @@ class DynamoUtils:
         dbTable = self.dynamodb.Table(tableName)
         response = dbTable.put_item(Item = item)
         return response
+
+    def updateItem(self, tableName, key, updates):
+        print('dynmo updateItem tableName: {}, key: {} updates: {}'.format(tableName, key, updates))
+        dbTable = self.dynamodb.Table(tableName)
+        response = dbTable.update_item(Key=key, AttributeUpdates=updates)
+        return response
     
 
-    def queryItems(self, tableName, keyConditionExpression, count):
-        print('dynamo queryItems tableName: {} keyConditionExpression: {}'.format(tableName, keyConditionExpression))
+    def queryItems(self, tableName, indexName=None, keyConditionExpression=None, count=1):
+        print('dynamo queryItems tableName: {} indexName: {} keyConditionExpression: {}'.format(tableName, indexName, keyConditionExpression))
         dbTable = self.dynamodb.Table(tableName)
 
         exclusiveStartKey = None
@@ -40,19 +47,36 @@ class DynamoUtils:
             try:
                 if exclusiveStartKey:
                     print('dynamo queryItems querying with exclusiveStartKey: {}'.format(exclusiveStartKey))
-                    response = dbTable.query(
-                        KeyConditionExpression=keyConditionExpression,
-                        ExclusiveStartKey=exclusiveStartKey,
-                        ScanIndexForward=False,
-                        Limit=count-len(retItems)
-                    );
+                    if (indexName) :
+                        response = dbTable.query(
+                            IndexName = indexName,
+                            KeyConditionExpression=keyConditionExpression,
+                            ExclusiveStartKey=exclusiveStartKey,
+                            ScanIndexForward=False,
+                            Limit=count-len(retItems)
+                        );
+                    else :
+                        response = dbTable.query(
+                            KeyConditionExpression=keyConditionExpression,
+                            ExclusiveStartKey=exclusiveStartKey,
+                            ScanIndexForward=False,
+                            Limit=count-len(retItems)
+                        );
                 else:
                     print('dynamo queryItems querying for the first time')
-                    response = dbTable.query(
-                        KeyConditionExpression=keyConditionExpression,
-                        ScanIndexForward=False,
-                        Limit=count
-                    );
+                    if indexName : 
+                        response = dbTable.query(
+                            IndexName = indexName,
+                            KeyConditionExpression=keyConditionExpression,
+                            ScanIndexForward=False,
+                            Limit=count
+                        );
+                    else :    
+                        response = dbTable.query(
+                            KeyConditionExpression=keyConditionExpression,
+                            ScanIndexForward=False,
+                            Limit=count
+                        );
 
                 if DYNAMO_KEY_RESPONSE_ITEMS in response:
                     items = response[DYNAMO_KEY_RESPONSE_ITEMS]

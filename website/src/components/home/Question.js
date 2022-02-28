@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { OPERATION_TYPE_SUBTRACTION, OPERATOR_ADDITION, OPERATOR_DIVISION, OPERATOR_MULTIPLICATION } from '../../constants/consts';
+import { OPERATION_TYPE_SUBTRACTION, OPERATOR_ADDITION, OPERATOR_DIVISION, OPERATOR_MULTIPLICATION, OPERATOR_SUBTRACTION } from '../../constants/consts';
 import './Question.css';
 
 function Question(props) {
@@ -79,7 +79,7 @@ function getActualResult(props) {
   var result = 0;
   if (props.operator === OPERATOR_ADDITION) {
     result = props.operand1 + props.operand2;
-  } else if (props.operator === OPERATION_TYPE_SUBTRACTION) {
+  } else if (props.operator === OPERATOR_SUBTRACTION) {
     result = props.operand1 - props.operand2;
   } else if (props.operator === OPERATOR_MULTIPLICATION) {
     result = props.operand1 * props.operand2;

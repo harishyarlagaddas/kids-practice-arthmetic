@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import {Helmet} from 'react-helmet';
-import OperationHandler from './OperationHandler';
+import OperationHandler from '../components/home/OperationHandler';
+import ContentSection from '../components/home/ContentSection'
 import './Home.css'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { OPERATION_TYPE_ADDITION, OPERATION_TYPE_DIVISION, OPERATION_TYPE_MULTIPLICATION, OPERATION_TYPE_SUBTRACTION, OPERATOR_ADDITION, OPERATOR_DIVISION, OPERATOR_MULTIPLICATION, OPERATOR_SUBTRACTION } from '../../constants/consts';
-import { loggedIn } from '../../reducers/loginReducer';
-import { clearStateAction } from '../../actions/actions';
-import ContentSection from './ContentSection';
+import { 
+    OPERATION_TYPE_ADDITION, 
+    OPERATION_TYPE_DIVISION, 
+    OPERATION_TYPE_MULTIPLICATION, 
+    OPERATION_TYPE_SUBTRACTION, 
+    OPERATOR_ADDITION, 
+    OPERATOR_DIVISION, 
+    OPERATOR_MULTIPLICATION, 
+    OPERATOR_SUBTRACTION 
+} from '../constants/consts';
+import { clearStateAction } from '../actions/actions';
+import { loggedIn } from '../reducers/loginReducer';
 
 const NUM_OF_QUESTIONS = 20
 

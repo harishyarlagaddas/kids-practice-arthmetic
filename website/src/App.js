@@ -7,25 +7,31 @@ import {
     Route,
     useNavigate
   } from 'react-router-dom'
-import { accessTokenInvalidAction, clearAccountInformationAction, clearStateAction, loginFailureAction, selectKidAction, validateAccessTokenAction } from "./actions/actions";
+import { 
+    accessTokenInvalidAction,
+    clearAccountInformationAction, 
+    clearStateAction,
+    validateAccessTokenAction 
+} from "./actions/actions";
 
-import Home from "./components/home/Home";
-import KidsSelect from "./components/kids-select/KidsSelect";
-import Login from "./components/login/login";
-import MyAccount from "./components/my-account/MyAccount";
-import DetailedResults from "./components/my-results/DetailedResults";
-import MyResults from "./components/my-results/MyResults";
+import Home from "./pages/Home";
+import KidsSelect from "./pages/KidsSelect";
+import Login from "./pages/login";
+import MyAccount from "./pages/MyAccount";
+import DetailedResults from "./pages/DetailedResults";
+import MyResults from "./pages/MyResults";
 import Progressbar from "./components/progress-bar/Progressbar";
-import Registration from "./components/registration/registration";
+import Registration from "./pages/registration";
 import Title from './components/title/Title'
 import { accessToken, loginInProgress } from "./reducers/loginReducer";
+import AddKid from "./pages/AddKid";
 
 function App() {
     const token = useSelector(accessToken)
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(clearStateAction())
-        // dispatch(accessTokenInvalidAction())
+        dispatch(accessTokenInvalidAction())
         console.log('current accessToken: '+token)
         if (token) {
             console.log('sending validateAccessTokenAction')
@@ -58,6 +64,7 @@ function App() {
                     <Route path = "/my-results" element = {<MyResults />} />
                     <Route path = "/kids-select" element = {<KidsSelect />} />
                     <Route path = "/detailed-result" element = {<DetailedResults />} />
+                    <Route path = "/add-kid" element = {<AddKid />} />
                         {/* <Navigate to="/" /> */}
                     {/* </Route> */}
                 </Routes>

@@ -8,6 +8,7 @@ from login_request import LoginRequest
 from validate_access_token import ValidateAccessTokenRequest
 from user_registration import UserRegistrationRequest
 from test_request import TestsRequest
+from add_kid import AddKidRequest
 import traceback
 
 # import requests
@@ -16,6 +17,7 @@ PATH_PARAM_LOGIN = "login"
 PATH_PARAM_ACCESS_TOKEN = 'access_token'
 PATH_PARAM_REGISTRATION = 'register'
 PATH_PARAM_TEST = 'tests'
+PATH_PARAM_ADD_KID = 'add_kid'
 
 def lambda_handler(event, context):
     try:
@@ -68,9 +70,9 @@ def lambda_handler(event, context):
                     JSON_KEY_ERROR_DESCRIPTION: GENERAL_ERROR_MESSAGE_ACCESS_TOKEN_INVALID
                 }
             else:
-                userId = validate_access_token(headers[HTTP_HEADER_AUTHORIZATION])
+                userId = get_userId(headers[HTTP_HEADER_AUTHORIZATION])
                 if not userId:
-                    print('Looks like accesstoken is expired')
+                    print('Unable to fetch userid')
                     statusCode = HTTP_STATUS_CODE_UNAUTHORIZED
                     retVal = {
                         JSON_KEY_IS_SUCCESS: False,
@@ -82,6 +84,29 @@ def lambda_handler(event, context):
                     if not body:
                         body = '{}'  #Just to pass empty value of body to TestsRequest
                     statusCode, retVal = testsRequest.process(method=method, queryParams=queryParams, body= json.loads(body), userId=userId)
+        elif (api == PATH_PARAM_ADD_KID) :
+            print('Path indicates it as Add Kid request')
+            if (HTTP_HEADER_AUTHORIZATION not in headers) :
+                print('There is no authorization header.')
+                statusCode = HTTP_STATUS_CODE_UNAUTHORIZED
+                retVal = {
+                    JSON_KEY_IS_SUCCESS: False,
+                    JSON_KEY_ERROR_CODE: GENERAL_ERROR_CODE_ACCESS_TOKEN_INVALID,
+                    JSON_KEY_ERROR_DESCRIPTION: GENERAL_ERROR_MESSAGE_ACCESS_TOKEN_INVALID
+                }
+            else:
+                userName = get_user(headers[HTTP_HEADER_AUTHORIZATION])
+                if not userName:
+                    print('Not able to fetch user')
+                    statusCode = HTTP_STATUS_CODE_UNAUTHORIZED
+                    retVal = {
+                        JSON_KEY_IS_SUCCESS: False,
+                        JSON_KEY_ERROR_CODE: GENERAL_ERROR_CODE_ACCESS_TOKEN_INVALID,
+                        JSON_KEY_ERROR_DESCRIPTION: GENERAL_ERROR_MESSAGE_ACCESS_TOKEN_INVALID
+                    }
+                else:
+                    addKidRequest = AddKidRequest()
+                    statusCode, retVal = addKidRequest.process(method=method, queryParams=queryParams, body= json.loads(body), userName=userName)
         else:
             print('This path is not implemented yet.. Path: {}'.format(api))
             statusCode = HTTP_STATUS_CODE_METHOD_NOT_IMPLEMENTED

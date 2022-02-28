@@ -1,8 +1,15 @@
 import { Helmet } from 'react-helmet'
 import { useLocation } from 'react-router-dom'
-import { JSON_KEY_OPERAND1_MAX_VALUE, JSON_KEY_OPERAND2_MAX_VALUE, JSON_KEY_OPERATION, JSON_KEY_QUESTIONS, JSON_KEY_TEST_TIME, JSON_KEY_TIME_TAKEN } from '../../constants/jsonKeys'
-import { getDateString } from '../../utils/utils'
-import ResultsTable from '../common/ResultsTable'
+import { 
+    JSON_KEY_OPERAND1_MAX_VALUE, 
+    JSON_KEY_OPERAND2_MAX_VALUE, 
+    JSON_KEY_OPERATION, 
+    JSON_KEY_QUESTIONS, 
+    JSON_KEY_TEST_TIME, 
+    JSON_KEY_TIME_TAKEN 
+} from '../constants/jsonKeys'
+import { getDateString } from '../utils/utils'
+import ResultsTable from '../components/common/ResultsTable'
 import './DetailedResults.css'
 
 export default function DetailedResults(props) {

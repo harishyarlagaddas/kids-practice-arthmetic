@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loggedIn } from "../../reducers/loginReducer";
+import { loggedIn } from "../reducers/loginReducer";
 import './MyAccount.css'
 
 export default function MyAccount(props) {

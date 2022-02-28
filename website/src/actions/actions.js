@@ -61,6 +61,28 @@ export const updateAccountInformationAction = (response) => ({
     response: response
 })
 
+export const addNewKidAction = (accessToken, kidsName) => {
+    return {
+        type: actionTypes.ACTION_TYPE_ADD_NEW_KID,
+        kidsName: kidsName,
+        accessToken: accessToken
+    }
+}
+
+export const addNewKidSuccessfulAction = response => {
+    return {
+        type: actionTypes.ACTION_TYPE_ADD_NEW_KID_SUCCESSFUL,
+        response: response
+    }
+}
+
+export const addNewKidFailureAction = response => {
+    return {
+        type: actionTypes.ACTION_TYPE_ADD_NEW_KID_FAILURE,
+        response: response
+    }
+}
+
 export const selectKidAction = (kidInfo) => {
     return {
         type: actionTypes.ACTION_TYPE_SELECT_KID,

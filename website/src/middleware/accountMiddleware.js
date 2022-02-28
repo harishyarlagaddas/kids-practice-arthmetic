@@ -1,7 +1,7 @@
 import axios from "axios";
-import { addNewTestFailureAction, addNewTestSuccessAction, getAllTestsAction, getAllTestsFailureAction, getAllTestsSuccessAction } from "../actions/actions";
-import { ACTION_TYPE_ADD_NEW_TEST, ACTION_TYPE_GET_ALL_TESTS } from "../constants/actionTypes";
-import { HEADER_KEY_AUTHORIZATION, QUERY_PARAMS_KEY_KIDS_ID, TESTS_URL } from "../constants/serverConsts";
+import { addNewKidFailureAction, addNewKidSuccessfulAction, addNewTestFailureAction, addNewTestSuccessAction, getAllTestsAction, getAllTestsFailureAction, getAllTestsSuccessAction } from "../actions/actions";
+import { ACTION_TYPE_ADD_NEW_KID, ACTION_TYPE_ADD_NEW_TEST, ACTION_TYPE_GET_ALL_TESTS } from "../constants/actionTypes";
+import { ADD_KID_URL, HEADER_KEY_AUTHORIZATION, QUERY_PARAMS_KEY_KIDS_ID, TESTS_URL } from "../constants/serverConsts";
 
 export const accountMiddleware = ({ dispatch }) => next => action => {
     next(action);
@@ -55,5 +55,33 @@ export const accountMiddleware = ({ dispatch }) => next => action => {
                 dispatch(getAllTestsFailureAction(error))
             })
         console.log('accountMiddleware get tests Out')
+    } else if (action.type === ACTION_TYPE_ADD_NEW_KID) {
+        console.log('accountMiddleware action: '+JSON.stringify(action))
+        const axiosInstance = axios.create({})
+
+        const postBody = {
+            kidsName: action.kidsName
+        }
+
+        let config = {
+            headers: {
+                [HEADER_KEY_AUTHORIZATION]: action.accessToken
+            }
+        }
+
+        axiosInstance.post(ADD_KID_URL, postBody, config)
+            .then(response => {
+                console.log('add kid request successful. response: %s', JSON.stringify(response))
+                dispatch(addNewKidSuccessfulAction(response.data))
+            })
+            .catch(error => {
+                console.log('add kid request request error. error: %s', error)
+                if (error.response) {
+                    dispatch(addNewKidFailureAction(error.response.data))
+                } else {
+                    dispatch(addNewKidFailureAction('Network error. Please try again...'))
+                }
+            })
+        console.log('add Kid out ')
     }
 }

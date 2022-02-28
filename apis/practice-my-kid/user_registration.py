@@ -64,7 +64,7 @@ class UserRegistrationRequest():
         retVal[JSON_KEY_IS_SUCCESS] = True
         retVal[JSON_KEY_MESSAGE] = USER_REGISTRATION_MESSAGE_SUCCESSFUL
         retVal[JSON_KEY_KIDS_INFORMATION] = kidsInfo
-        accessToken = create_access_token(userId=userId)
+        accessToken = create_access_token(userId=userId, userName=userName)
         retVal[JSON_KEY_ACCESS_TOKEN] = accessToken
         retVal[JSON_KEY_KIDS_INFORMATION] = kidsInfo
 
