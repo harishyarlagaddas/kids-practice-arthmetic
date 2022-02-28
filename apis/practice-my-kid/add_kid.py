@@ -51,7 +51,9 @@ class AddKidRequest():
         kidsInfoFromDynamo = item[DYNAMO_KEY_KIDS_INFORMATION]
         kidsInfoFromDynamo.append(kidsInfo)
         item[DYNAMO_KEY_KIDS_INFORMATION] = kidsInfoFromDynamo
-        response = dynamoUtils.putItem(DYNAMO_TABLE_NAME_USERS, item)
+        # response = dynamoUtils.updateItem(DYNAMO_TABLE_NAME_USERS, key={DYNAMO_KEY_USER_NAME: userName}, updates={DYNAMO_KEY_KIDS_INFORMATION: kidsInfoFromDynamo})
+        response = dynamoUtils.putItem(tableName=DYNAMO_TABLE_NAME_USERS, item=item)
+        print(response)
 
         return HTTP_STATUS_CODE_CREATED, kidsInfo
 

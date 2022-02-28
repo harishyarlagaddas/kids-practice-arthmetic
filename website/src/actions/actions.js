@@ -61,10 +61,11 @@ export const updateAccountInformationAction = (response) => ({
     response: response
 })
 
-export const addNewKidAction = kidsName => {
+export const addNewKidAction = (accessToken, kidsName) => {
     return {
         type: actionTypes.ACTION_TYPE_ADD_NEW_KID,
-        kidsName: kidsName
+        kidsName: kidsName,
+        accessToken: accessToken
     }
 }
 

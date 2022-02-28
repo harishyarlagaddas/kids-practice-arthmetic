@@ -15,6 +15,7 @@ import {
     ACTION_TYPE_UPDATE_ACCOUNT_INFORMATION 
 } from "../constants/actionTypes"
 import { OPERATION_TYPE_ADDITION, OPERATION_TYPE_DIVISION, OPERATION_TYPE_MULTIPLICATION, OPERATION_TYPE_SUBTRACTION } from "../constants/consts"
+import { JSON_KEY_TEST_TIME } from "../constants/jsonKeys"
 
 const initialState = {
     kidsInformation: [
@@ -149,7 +150,23 @@ export const apiCallInProgress = state => state.account.apiCallInProgress
 export const apiCallComplete = state => state.account.apiCallComplete
 export const apiCallFailureMsg = state => state.account.apiCallFailureMessage
 export const lastTimeTestsRetrieved = state => state.account.lastTimeTestsRetrieved
-export const additionTests = state => state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_ADDITION})
-export const subtractionTests = state => state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_SUBTRACTION})
-export const multiplicationTests = state => state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_MULTIPLICATION})
-export const divisionTests = state => state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_DIVISION})
+export const additionTests = state => {
+    const addTests = state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_ADDITION})
+    addTests.sort((a, b) => b[JSON_KEY_TEST_TIME] - a[JSON_KEY_TEST_TIME])
+    return addTests.slice(0, 5);
+}
+export const subtractionTests = state => {
+    const subTests = state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_SUBTRACTION})
+    subTests.sort((a, b) => b[JSON_KEY_TEST_TIME] - a[JSON_KEY_TEST_TIME])
+    return subTests.slice(0, 5)
+}
+export const multiplicationTests = state => {
+    const mulTests = state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_MULTIPLICATION})
+    mulTests.sort((a,b) => b[JSON_KEY_TEST_TIME] - a[JSON_KEY_TEST_TIME])
+    return mulTests.slice(0, 5)
+}
+export const divisionTests = state => {
+    const divTests = state.account.tests.filter((test) => {return test.operation === OPERATION_TYPE_DIVISION})
+    divTests.sort((a,b) => b[JSON_KEY_TEST_TIME] - a[JSON_KEY_TEST_TIME])
+    return divTests.slice(0, 5)
+}

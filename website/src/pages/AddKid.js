@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { addNewKidAction, clearStateAction } from "../actions/actions"
 import Progressbar from "../components/progress-bar/Progressbar"
 import { apiCallComplete, apiCallFailureMsg, apiCallInProgress, kidsNames } from "../reducers/accountReducer"
+import { accessToken } from "../reducers/loginReducer"
 import './AddKid.css'
 
 export default function AddKid(props) {
     const [kidsName, setKidsName] = useState('')
     const [error, setError] = useState('')
     const nameOfTheKids = useSelector(kidsNames)
+    const token = useSelector(accessToken)
     const isApiCallInProgres = useSelector(apiCallInProgress)
     const isApiCallComplate = useSelector(apiCallComplete)
     const apiError = useSelector(apiCallFailureMsg)
@@ -45,7 +47,7 @@ export default function AddKid(props) {
                     } else if (nameOfTheKids.includes(kidsName)) {
                         setError('This kids name alreay exists')
                     } else {
-                        dispatch(addNewKidAction(kidsName))
+                        dispatch(addNewKidAction(token, kidsName))
                     }
                 }}    
             />

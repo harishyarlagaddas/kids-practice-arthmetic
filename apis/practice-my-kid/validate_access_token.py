@@ -47,7 +47,7 @@ class ValidateAccessTokenRequest():
         currentTime = int(datetime.utcnow().timestamp())
         differenceInSeconds = expireAt - currentTime
         if differenceInSeconds <= ACCESS_TOKEN_REFRESH_TIME_LIMIT and refreshCount <= ACCESS_TOKEN_REFRESH_COUNT :
-            accessToken = create_access_token(userId=item[DYNAMO_KEY_USER_ID], refresh_count=refreshCount)
+            accessToken = create_access_token(userId=item[DYNAMO_KEY_USER_ID], userName=item[DYNAMO_KEY_USER_NAME], refresh_count=refreshCount)
             retVal[JSON_KEY_IS_SUCCESS] = True
             retVal[JSON_KEY_ACCESS_TOKEN] = accessToken
         elif differenceInSeconds > ACCESS_TOKEN_REFRESH_TIME_LIMIT :

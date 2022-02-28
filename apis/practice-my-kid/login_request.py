@@ -57,7 +57,7 @@ class LoginRequest:
             retVal[JSON_KEY_ERROR_DESCRIPTION] = LOGIN_ERROR_MESSAGE_INVALID_PASSWORD
             return HTTP_STATUS_CODE_UNAUTHORIZED, retVal
 
-        accessToken = create_access_token(userId=item[DYNAMO_KEY_USER_ID])
+        accessToken = create_access_token(userId=item[DYNAMO_KEY_USER_ID], userName=item[DYNAMO_KEY_USER_NAME])
         retVal[JSON_KEY_IS_SUCCESS] = True
         retVal[JSON_KEY_KIDS_INFORMATION] = item[DYNAMO_KEY_KIDS_INFORMATION]
         retVal[JSON_KEY_ACCESS_TOKEN] = accessToken

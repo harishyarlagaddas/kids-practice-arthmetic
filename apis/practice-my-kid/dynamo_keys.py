@@ -1,4 +1,5 @@
 DYNAMO_TABLE_NAME_USERS = 'practice-my-kid-users'
+DYNAMO_TABLE_NAME_USERS_INDEX = 'userId-index'
 DYNAMO_TABLE_NAME_ACCESS_TOKENS = 'practice-my-kid-access-tokens'
 DYNAMO_TABLE_NAME_QUESTIONS = 'practice-my-kid-questions'
 

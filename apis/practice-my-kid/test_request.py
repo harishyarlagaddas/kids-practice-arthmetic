@@ -38,7 +38,11 @@ class TestsRequest:
 
         kidsId = queryParams[HTTP_QUERY_PARAM_KIDS_ID]
         dynamo_utils = DynamoUtils()
-        items = dynamo_utils.queryItems(DYNAMO_TABLE_NAME_QUESTIONS, Key(DYNAMO_KEY_KIDS_ID).eq(kidsId), 100)
+        items = dynamo_utils.queryItems(
+            tableName = DYNAMO_TABLE_NAME_QUESTIONS, 
+            keyConditionExpression = Key(DYNAMO_KEY_KIDS_ID).eq(kidsId), 
+            count = 100
+        )
 
         retVal[JSON_KEY_IS_SUCCESS] = True
         retVal[JSON_KEY_KIDS_ID] = kidsId

@@ -40,6 +40,7 @@ export default function KidsSelect() {
                         <div 
                             className="kidsName"
                             onClick={() => {
+                                console.log(info)
                                 console.log('KidsSelect selected kid: '+info.kidsName)
                                 dispatch(selectKidAction(info))
                                 dispatch(clearTestsAction())
