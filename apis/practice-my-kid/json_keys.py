@@ -1,6 +1,8 @@
 JSON_KEY_IS_SUCCESS = 'success'
 JSON_KEY_USER_NAME = 'userName'
 JSON_KEY_PASSWORD = 'password'
+JSON_KEY_TEMPORARY_AUTH_CODE = 'temporaryAuthCode'
+JSON_KEY_NEW_PASSWORD = 'newPassword'
 JSON_KEY_KIDS_INFORMATION = 'kidsInfo'
 JSON_KEY_KIDS_NAMES = 'kidsNames'
 JSON_KEY_KIDS_NAME = 'kidsName'

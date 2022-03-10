@@ -4,7 +4,7 @@ import { addNewKidAction, clearStateAction } from "../actions/actions"
 import Progressbar from "../components/progress-bar/Progressbar"
 import { apiCallComplete, apiCallFailureMsg, apiCallInProgress, kidsNames } from "../reducers/accountReducer"
 import { accessToken } from "../reducers/loginReducer"
-import './AddKid.css'
+import './MyForm.css'
 
 export default function AddKid(props) {
     const [kidsName, setKidsName] = useState('')
@@ -26,16 +26,16 @@ export default function AddKid(props) {
     } 
     console.log('apiError: '+apiError)
     return (
-        <div className="addKidComponent">
-            <div className="addKidSuccessText">{(isApiCallComplate && !apiError)? "Successfully added the kid: "+kidsName : ''}</div>
-            <div className="addKidErrorText">{error ? error : apiError}</div>
-            <input className="addKidInputText"
+        <div className="myFormComponent">
+            <div className="myFormSuccessText">{(isApiCallComplate && !apiError)? "Successfully added the kid: "+kidsName : ''}</div>
+            <div className="myFormErrorText">{error ? error : apiError}</div>
+            <input className="myFormInputText"
                 type='text'
                 placeholder='kidsName'
                 value={kidsName}
                 onChange={(event) => setKidsName(event.target.value)}
             />
-            <input className="addKidButton"
+            <input className="myFormButton"
                 type='button'
                 value='Add Kid'
                 onClick={() => {

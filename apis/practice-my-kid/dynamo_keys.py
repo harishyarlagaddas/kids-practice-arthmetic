@@ -2,10 +2,12 @@ DYNAMO_TABLE_NAME_USERS = 'practice-my-kid-users'
 DYNAMO_TABLE_NAME_USERS_INDEX = 'userId-index'
 DYNAMO_TABLE_NAME_ACCESS_TOKENS = 'practice-my-kid-access-tokens'
 DYNAMO_TABLE_NAME_QUESTIONS = 'practice-my-kid-questions'
+DYNAMO_TABLE_NAME_CODES = 'practice-my-kids-codes'
 
 
 DYNAMO_KEY_USER_NAME = 'userName'
 DYNAMO_KEY_PASSWORD = 'password'
+DYNAMO_KEY_AUTHORIZATION_CODE = 'temporaryAuthCode'
 DYNAMO_KEY_USER_ID = 'userId'
 DYNAMO_KEY_KIDS_INFORMATION = 'kidsInfo'
 DYNAMO_KEY_KIDS_NAME = 'kidsName'

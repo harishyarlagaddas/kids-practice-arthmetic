@@ -1,7 +1,7 @@
 import axios from "axios";
-import { addNewKidFailureAction, addNewKidSuccessfulAction, addNewTestFailureAction, addNewTestSuccessAction, getAllTestsAction, getAllTestsFailureAction, getAllTestsSuccessAction } from "../actions/actions";
-import { ACTION_TYPE_ADD_NEW_KID, ACTION_TYPE_ADD_NEW_TEST, ACTION_TYPE_GET_ALL_TESTS } from "../constants/actionTypes";
-import { ADD_KID_URL, HEADER_KEY_AUTHORIZATION, QUERY_PARAMS_KEY_KIDS_ID, TESTS_URL } from "../constants/serverConsts";
+import { addNewKidFailureAction, addNewKidSuccessfulAction, addNewTestFailureAction, addNewTestSuccessAction, changePasswordFailureAction, changePasswordSuccessfulAction, getAllTestsAction, getAllTestsFailureAction, getAllTestsSuccessAction } from "../actions/actions";
+import { ACTION_TYPE_ADD_NEW_KID, ACTION_TYPE_ADD_NEW_TEST, ACTION_TYPE_CHANGE_PASSWORD, ACTION_TYPE_GET_ALL_TESTS } from "../constants/actionTypes";
+import { ADD_KID_URL, CHANGE_PASSWORD_URL, HEADER_KEY_AUTHORIZATION, QUERY_PARAMS_KEY_KIDS_ID, TESTS_URL } from "../constants/serverConsts";
 
 export const accountMiddleware = ({ dispatch }) => next => action => {
     next(action);
@@ -52,7 +52,13 @@ export const accountMiddleware = ({ dispatch }) => next => action => {
             })
             .catch(error => {
                 console.log('tests get request error. Error: %s', error)
-                dispatch(getAllTestsFailureAction(error))
+                if (error.response) {
+                    dispatch(getAllTestsFailureAction(error.response))
+                } else {
+                    dispatch(getAllTestsFailureAction({
+                        errorDescription: 'Network error. Please try again...'
+                    }))
+                }
             })
         console.log('accountMiddleware get tests Out')
     } else if (action.type === ACTION_TYPE_ADD_NEW_KID) {
@@ -79,7 +85,9 @@ export const accountMiddleware = ({ dispatch }) => next => action => {
                 if (error.response) {
                     dispatch(addNewKidFailureAction(error.response.data))
                 } else {
-                    dispatch(addNewKidFailureAction('Network error. Please try again...'))
+                    dispatch(changePasswordFailureAction({
+                        errorDescription: 'Network error. Please try again...'
+                    }))
                 }
             })
         console.log('add Kid out ')

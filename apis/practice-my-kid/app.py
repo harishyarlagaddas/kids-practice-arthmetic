@@ -9,6 +9,8 @@ from validate_access_token import ValidateAccessTokenRequest
 from user_registration import UserRegistrationRequest
 from test_request import TestsRequest
 from add_kid import AddKidRequest
+from change_password import ChangePasswordRequest
+from email_send_code import EmailSendCodeRequest
 import traceback
 
 # import requests
@@ -18,6 +20,8 @@ PATH_PARAM_ACCESS_TOKEN = 'access_token'
 PATH_PARAM_REGISTRATION = 'register'
 PATH_PARAM_TEST = 'tests'
 PATH_PARAM_ADD_KID = 'add_kid'
+PATH_PARAM_CHANGE_PASSWORD = 'change_password'
+PATH_PARAM_SEND_CODE = 'send_code'
 
 def lambda_handler(event, context):
     try:
@@ -70,9 +74,9 @@ def lambda_handler(event, context):
                     JSON_KEY_ERROR_DESCRIPTION: GENERAL_ERROR_MESSAGE_ACCESS_TOKEN_INVALID
                 }
             else:
-                userId = get_userId(headers[HTTP_HEADER_AUTHORIZATION])
-                if not userId:
-                    print('Unable to fetch userid')
+                user = get_user_from_access_token(headers[HTTP_HEADER_AUTHORIZATION])
+                if not user:
+                    print('Unable to fetch user')
                     statusCode = HTTP_STATUS_CODE_UNAUTHORIZED
                     retVal = {
                         JSON_KEY_IS_SUCCESS: False,
@@ -83,7 +87,7 @@ def lambda_handler(event, context):
                     testsRequest = TestsRequest()
                     if not body:
                         body = '{}'  #Just to pass empty value of body to TestsRequest
-                    statusCode, retVal = testsRequest.process(method=method, queryParams=queryParams, body= json.loads(body), userId=userId)
+                    statusCode, retVal = testsRequest.process(method=method, queryParams=queryParams, body= json.loads(body), user=user)
         elif (api == PATH_PARAM_ADD_KID) :
             print('Path indicates it as Add Kid request')
             if (HTTP_HEADER_AUTHORIZATION not in headers) :
@@ -95,8 +99,8 @@ def lambda_handler(event, context):
                     JSON_KEY_ERROR_DESCRIPTION: GENERAL_ERROR_MESSAGE_ACCESS_TOKEN_INVALID
                 }
             else:
-                userName = get_user(headers[HTTP_HEADER_AUTHORIZATION])
-                if not userName:
+                user = get_user_from_access_token(headers[HTTP_HEADER_AUTHORIZATION])
+                if not user:
                     print('Not able to fetch user')
                     statusCode = HTTP_STATUS_CODE_UNAUTHORIZED
                     retVal = {
@@ -106,7 +110,40 @@ def lambda_handler(event, context):
                     }
                 else:
                     addKidRequest = AddKidRequest()
-                    statusCode, retVal = addKidRequest.process(method=method, queryParams=queryParams, body= json.loads(body), userName=userName)
+                    statusCode, retVal = addKidRequest.process(method=method, queryParams=queryParams, body= json.loads(body), user=user)
+        elif (api == PATH_PARAM_CHANGE_PASSWORD) :
+            print('Path indicates it as Change Password request')
+            bodyJson = json.loads(body)
+            if not (HTTP_HEADER_AUTHORIZATION in headers or JSON_KEY_USER_NAME in bodyJson) :
+                print('There is no authorization header or username in body')
+                statusCode = HTTP_STATUS_CODE_UNAUTHORIZED
+                retVal = {
+                    JSON_KEY_IS_SUCCESS: False,
+                    JSON_KEY_ERROR_CODE: GENERAL_ERROR_CODE_ACCESS_TOKEN_INVALID,
+                    JSON_KEY_ERROR_DESCRIPTION: GENERAL_ERROR_MESSAGE_ACCESS_TOKEN_INVALID
+                }
+            else:
+                user = None
+                if HTTP_HEADER_AUTHORIZATION in headers: 
+                    user = get_user_from_access_token(headers[HTTP_HEADER_AUTHORIZATION])
+                elif not user and JSON_KEY_USER_NAME in bodyJson:
+                    user = get_user_from_user_name(bodyJson[JSON_KEY_USER_NAME])
+                    
+                if not user:
+                    print('Not able to fetch user')
+                    statusCode = HTTP_STATUS_CODE_UNAUTHORIZED
+                    retVal = {
+                        JSON_KEY_IS_SUCCESS: False,
+                        JSON_KEY_ERROR_CODE: GENERAL_ERROR_CODE_ACCESS_TOKEN_INVALID,
+                        JSON_KEY_ERROR_DESCRIPTION: GENERAL_ERROR_MESSAGE_ACCESS_TOKEN_INVALID
+                    }
+                else:
+                    changePasswordRequest = ChangePasswordRequest()
+                    statusCode, retVal = changePasswordRequest.process(method=method, queryParams=queryParams, body=bodyJson, user=user)
+        elif api == PATH_PARAM_SEND_CODE :
+            print('Path indicates it as send code...')
+            emailSendRequest = EmailSendCodeRequest()
+            statusCode, retVal = emailSendRequest.process(method=method, queryParams=queryParams, body=json.loads(body))
         else:
             print('This path is not implemented yet.. Path: {}'.format(api))
             statusCode = HTTP_STATUS_CODE_METHOD_NOT_IMPLEMENTED
@@ -129,7 +166,9 @@ def lambda_handler(event, context):
 
         return {
             "statusCode": HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR,
-            "body": GENERAL_ERROR_MESSAGE_INTERNAL_SERVER_ERROR,
+            "body": {
+                JSON_KEY_ERROR_DESCRIPTION: GENERAL_ERROR_MESSAGE_INTERNAL_SERVER_ERROR,
+            },
             "headers": {
                 "Access-Control-Allow-Origin": "*"
             }

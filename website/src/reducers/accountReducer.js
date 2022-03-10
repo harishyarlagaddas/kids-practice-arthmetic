@@ -18,6 +18,7 @@ import { OPERATION_TYPE_ADDITION, OPERATION_TYPE_DIVISION, OPERATION_TYPE_MULTIP
 import { JSON_KEY_TEST_TIME } from "../constants/jsonKeys"
 
 const initialState = {
+    userName: '',
     kidsInformation: [
         {
             kidsName: 'Test Kid',
@@ -41,6 +42,7 @@ export default function accountReducer(state=initialState, action) {
         case ACTION_TYPE_UPDATE_ACCOUNT_INFORMATION:
             console.log(action.response)
             return Object.assign({}, state, {
+                userName: action.response.userName,
                 kidsInformation: action.response.kidsInfo
             })
         case ACTION_TYPE_SELECT_KID:
@@ -72,6 +74,7 @@ export default function accountReducer(state=initialState, action) {
             })
         case ACTION_TYPE_CLEAR_ACCOUNT_INFORMATION:
             return Object.assign({}, state, {
+                userName: '',
                 kidsInformation: null,
                 selectedKid: null,
                 tests: [],
@@ -124,6 +127,7 @@ export default function accountReducer(state=initialState, action) {
                 tests: [],
                 lastTimeTestsRetrieved: null
             })
+
         default:
             return state
     }
@@ -144,6 +148,8 @@ export const numOfKids = state => {
        return state.account.kidsInformation.length
     }
 }
+
+export const userName = state => state.account.userName
 export const selectedKidInfo = state => state.account.selectedKid
 export const kidsInfo = state => state.account.kidsInformation
 export const apiCallInProgress = state => state.account.apiCallInProgress

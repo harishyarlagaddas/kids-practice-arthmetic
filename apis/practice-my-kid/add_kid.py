@@ -17,7 +17,7 @@ class AddKidRequest():
     def __init__(self):
         print("Add Kid Request Initialization")
 
-    def process(self, method, queryParams, body, userName):
+    def process(self, method, queryParams, body, user):
         print("AddKidRequest Process body:{} queryParams:{}".format(body, queryParams))
         retVal = {}
 
@@ -41,18 +41,11 @@ class AddKidRequest():
         }
         
         dynamoUtils = DynamoUtils()
-        item = dynamoUtils.getItem(DYNAMO_TABLE_NAME_USERS, key={DYNAMO_KEY_USER_NAME: userName})
-        if not item:
-            retVal[JSON_KEY_IS_SUCCESS] = False
-            retVal[JSON_KEY_ERROR_CODE] = GENERAL_ERROR_CODE_ACCESS_TOKEN_INVALID
-            retVal[JSON_KEY_ERROR_DESCRIPTION] = GENERAL_ERROR_MESSAGE_ACCESS_TOKEN_INVALID
-            return HTTP_STATUS_CODE_UNAUTHORIZED, retVal
-            
-        kidsInfoFromDynamo = item[DYNAMO_KEY_KIDS_INFORMATION]
+        kidsInfoFromDynamo = user[DYNAMO_KEY_KIDS_INFORMATION]
         kidsInfoFromDynamo.append(kidsInfo)
-        item[DYNAMO_KEY_KIDS_INFORMATION] = kidsInfoFromDynamo
+        user[DYNAMO_KEY_KIDS_INFORMATION] = kidsInfoFromDynamo
         # response = dynamoUtils.updateItem(DYNAMO_TABLE_NAME_USERS, key={DYNAMO_KEY_USER_NAME: userName}, updates={DYNAMO_KEY_KIDS_INFORMATION: kidsInfoFromDynamo})
-        response = dynamoUtils.putItem(tableName=DYNAMO_TABLE_NAME_USERS, item=item)
+        response = dynamoUtils.putItem(tableName=DYNAMO_TABLE_NAME_USERS, item=user)
         print(response)
 
         return HTTP_STATUS_CODE_CREATED, kidsInfo

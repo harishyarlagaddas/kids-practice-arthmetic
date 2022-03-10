@@ -4,14 +4,21 @@ import {
     loginFailureAction,
     accessTokenInvalidAction,
     updateAccountInformationAction,
-    accessTokenValidAction
+    accessTokenValidAction,
+    clearAccountInformationAction,
+    changePasswordFailureAction,
+    changePasswordSuccessfulAction,
+    requestTemporaryAuthCodeActionSuccessfulAction,
+    requestTemporaryAuthCodeActionFailureAction
 } from '../actions/actions'
 
 import {
+    ACTION_TYPE_CHANGE_PASSWORD,
     ACTION_TYPE_LOGIN_REQUEST,
+    ACTION_TYPE_REQUEST_TEMPORARY_AUTH_CODE,
     ACTION_TYPE_VALIDATE_ACCESS_TOKEN
 } from '../constants/actionTypes'
-import { ACCESS_TOKEN_URL, LOGIN_URL } from "../constants/serverConsts";
+import { ACCESS_TOKEN_URL, CHANGE_PASSWORD_URL, HEADER_KEY_AUTHORIZATION, LOGIN_URL, REQUEST_TEMPORARY_AUTH_CODE } from "../constants/serverConsts";
 
 export const loginMiddleware = ({ dispatch }) => next => action => {
     next(action);
@@ -63,12 +70,76 @@ export const loginMiddleware = ({ dispatch }) => next => action => {
             })
             .catch(error => {
                 console.log('validate accessToken request error. error: %s', error)
-                if (error.response) {
-                    dispatch(accessTokenInvalidAction())
-                } else {
-                    dispatch(accessTokenInvalidAction())
-                }
+                dispatch(accessTokenInvalidAction())
+                dispatch(clearAccountInformationAction())
             })
         console.log('validating accesstoken out ')
+    } else if (action.type === ACTION_TYPE_CHANGE_PASSWORD) {
+        console.log('accountMiddleware action: '+JSON.stringify(action))
+        const axiosInstance = axios.create({})
+
+        const postBody = {
+            newPassword: action.newPassword
+        }
+
+        if (action.temporaryAuthCode) {
+            postBody['temporaryAuthCode'] = action.temporaryAuthCode
+        } else {
+            postBody['password'] = action.password
+        }
+
+        if (action.userName) {
+            postBody['userName'] = action.userName
+        }
+
+        let config = null
+        if (action.accessToken) {
+            config = {
+                headers: {
+                    [HEADER_KEY_AUTHORIZATION]: action.accessToken
+                }
+            }
+        }
+
+        axiosInstance.post(CHANGE_PASSWORD_URL, postBody, config)
+            .then(response => {
+                console.log('change password successful. response: %s', JSON.stringify(response))
+                dispatch(changePasswordSuccessfulAction())
+            })
+            .catch(error => {
+                console.log('change password request request error. error: %s', error)
+                if (error.response) {
+                    dispatch(changePasswordFailureAction(error.response.data))
+                } else {
+                    dispatch(changePasswordFailureAction({
+                        errorDescription: 'Network error. Please try again...'
+                    }))
+                }
+            })
+        console.log('change password out ')
+    } else if (action.type === ACTION_TYPE_REQUEST_TEMPORARY_AUTH_CODE) {
+        console.log('accountMiddleware action: '+JSON.stringify(action))
+        const axiosInstance = axios.create({})
+
+        const postBody = {
+            userName: action.userName
+        }
+
+        axiosInstance.post(REQUEST_TEMPORARY_AUTH_CODE, postBody)
+            .then(response => {
+                console.log('Request temp auth code successful. response: %s', JSON.stringify(response))
+                dispatch(requestTemporaryAuthCodeActionSuccessfulAction())
+            })
+            .catch(error => {
+                console.log('Request temp auth code request request error. error: %s', error)
+                if (error.response) {
+                    dispatch(requestTemporaryAuthCodeActionFailureAction(error.response.data))
+                } else {
+                    dispatch(requestTemporaryAuthCodeActionFailureAction({
+                        errorDescription: 'Network error. Please try again...'
+                    }))
+                }
+            })
+        console.log('Request temp auth code out ')
     }
 }

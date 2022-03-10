@@ -12,7 +12,11 @@ Resources:
   PracticeMyKidFunction:
     Type: AWS::Serverless::Function
     Properties:
+<<<<<<< HEAD
       CodeUri: s3://harish-deploy-artifacts/lambda/practice-my-kid/e80bb0ec00c552fc0d54c3a2c4f88d27
+=======
+      CodeUri: s3://harish-deploy-artifacts/lambda/practice-my-kid/557bef995ac46fbbbdeb58b8899a109a
+>>>>>>> a23daa5 (Mar 09 Added Account page, forgot password, change password pages and corresponding backend changes)
       Description: PracticeMyKid api endpoints of PracticeMyKid application
       Handler: app.lambda_handler
       Runtime: python3.6
