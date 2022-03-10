@@ -29,6 +29,7 @@ function Home() {
     const isLoggedIn = useSelector(loggedIn)
     
     //Clear the states
+    console.log('dispatching clear state action')
     dispatch(clearStateAction())
 
     if (!isLoggedIn) {

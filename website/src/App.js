@@ -23,8 +23,10 @@ import MyResults from "./pages/MyResults";
 import Progressbar from "./components/progress-bar/Progressbar";
 import Registration from "./pages/registration";
 import Title from './components/title/Title'
-import { accessToken, loginInProgress } from "./reducers/loginReducer";
+import { accessToken, accessTokenValidationInProgress } from "./reducers/loginReducer";
 import AddKid from "./pages/AddKid";
+import ChangePassword from "./pages/ChangePassword";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
     const token = useSelector(accessToken)
@@ -42,7 +44,8 @@ function App() {
         }
     },[])
     
-    var inProgress = useSelector(loginInProgress)
+    console.log('App Component In')
+    var inProgress = useSelector(accessTokenValidationInProgress)
     
     if (inProgress) {
         return (
@@ -65,6 +68,8 @@ function App() {
                     <Route path = "/kids-select" element = {<KidsSelect />} />
                     <Route path = "/detailed-result" element = {<DetailedResults />} />
                     <Route path = "/add-kid" element = {<AddKid />} />
+                    <Route path = "/change-password" element = {<ChangePassword />} />
+                    <Route path = "/forgot-password" element = {<ForgotPassword />} />
                         {/* <Navigate to="/" /> */}
                     {/* </Route> */}
                 </Routes>

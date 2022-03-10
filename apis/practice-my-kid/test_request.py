@@ -15,19 +15,19 @@ class TestsRequest:
     def __init__(self):
         print("Test Request Initialization")
 
-    def process(self, method, queryParams, body, userId):
-        print("TestRequest Process body:{} queryParams:{} userId: {}".format(body, queryParams, userId))
+    def process(self, method, queryParams, body, user):
+        print("TestRequest Process body:{} queryParams:{} user: {}".format(body, queryParams, user))
         
         if (method == HTTP_METHOD_POST) :
-            return self.storeTest(body=body, userId = userId)
+            return self.storeTest(body=body, user = user)
         elif (method == HTTP_METHOD_GET) :
-            return self.getTests(queryParams, userId=userId)
+            return self.getTests(queryParams, user=user)
         else:
             print('TestResult Method not supported..')
             return HTTP_STATUS_CODE_METHOD_NOT_IMPLEMENTED, {}
 
-    def getTests(self, queryParams, userId) :
-        print('TestResult getTests userId: {}'.format(userId))
+    def getTests(self, queryParams, user) :
+        print('TestResult getTests user: {}'.format(user))
         
         retVal = {}
         if (HTTP_QUERY_PARAM_KIDS_ID not in queryParams) :
@@ -50,8 +50,8 @@ class TestsRequest:
         return HTTP_STATUS_CODE_SUCCESS, retVal
 
 
-    def storeTest(self, body, userId) :
-        print('TestResult storeTest userId: {}'.format(userId))
+    def storeTest(self, body, user) :
+        print('TestResult storeTest user: {}'.format(user))
         test_dynamo = {}
         retVal = {}
         if (JSON_KEY_KIDS_ID not in body or JSON_KEY_TEST_TIME not in body or JSON_KEY_TIME_TAKEN not in body
@@ -63,7 +63,7 @@ class TestsRequest:
             retVal[JSON_KEY_ERROR_DESCRIPTION] = GENERAL_ERROR_MESSAGE_INVALID_INPUT
             return HTTP_STATUS_CODE_BAD_REQUEST, retVal
 
-        test_dynamo[DYNAMO_KEY_USER_ID] = userId
+        test_dynamo[DYNAMO_KEY_USER_ID] = user[DYNAMO_KEY_USER_ID]
         test_dynamo[DYNAMO_KEY_KIDS_ID] = body[JSON_KEY_KIDS_ID]
         test_dynamo[DYNAMO_KEY_TEST_TIME] = body[JSON_KEY_TEST_TIME]
         test_dynamo[DYNAMO_KEY_TIME_TAKEN] = body[JSON_KEY_TIME_TAKEN]

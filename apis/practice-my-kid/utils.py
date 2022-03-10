@@ -5,6 +5,7 @@ from consts import *
 from datetime import datetime, timedelta
 from dynamo_keys import *
 from dynamo_utils import DynamoUtils
+from ses_utils import SESUtils
 
 
 def create_access_token(userId, userName, refresh_count = 0) :
@@ -32,18 +33,17 @@ def validate_access_token(accessToken) :
     item = get_access_token(accessToken=accessToken)
     return item is not None
 
-def get_userId(accessToken) :
-    item = get_access_token(accessToken=accessToken)
-    if not item or DYNAMO_KEY_USER_ID not in item : 
-        print('get_userId not able to get userId. May be accesstoken invalid..')
-        return None
-    
-    print('validate_access_token token valid')
-    return item[DYNAMO_KEY_USER_ID]
-
-def get_user(accessToken) :
-    item = get_access_token(accessToken=accessToken)
+def get_user_from_access_token(accessToken) :
+    dynamoUtils = DynamoUtils()
+    item = dynamoUtils.getItem(DYNAMO_TABLE_NAME_ACCESS_TOKENS, key={DYNAMO_KEY_ACCESS_TOKEN: accessToken})
     if not item:
-        print('get_user not able to get userName. May be accessToken invalid..')
+        print('get_user_from_access_token not able to get userName. May be accessToken invalid..')
         return None
-    return item[DYNAMO_KEY_USER_NAME]
+
+    user = dynamoUtils.getItem(DYNAMO_TABLE_NAME_USERS, key={DYNAMO_KEY_USER_NAME: item[DYNAMO_KEY_USER_NAME]})
+    return user
+
+def get_user_from_user_name(userName) :
+    dynamoUtils = DynamoUtils()
+    user = dynamoUtils.getItem(DYNAMO_TABLE_NAME_USERS, key={DYNAMO_KEY_USER_NAME: userName})
+    return user
