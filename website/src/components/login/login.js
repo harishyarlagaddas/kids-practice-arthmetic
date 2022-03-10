@@ -1,27 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from "react-router-dom";
+<<<<<<< Updated upstream:website/src/components/login/login.js
 import { loginFailureAction, loginRequestAction } from "../../actions/actions";
 import './login.css'
 import { loggedIn, loginError, loginInProgress } from "../../reducers/loginReducer";
 import Progressbar from "../progress-bar/Progressbar";
 import { selectedKidInfo } from "../../reducers/accountReducer";
 import { isValidEmail } from "../../utils/utils";
+=======
+import { loginFailureAction, loginRequestAction } from "../actions/actions";
+import { authenticationApiError, authenticationApiInProgress, loggedIn } from "../reducers/loginReducer";
+import Progressbar from "../components/progress-bar/Progressbar";
+import { selectedKidInfo } from "../reducers/accountReducer";
+import { isValidEmail } from "../utils/utils";
+import './login.css'
+import './MyForm.css'
+>>>>>>> Stashed changes:website/src/pages/login.js
 
 function LoginLayout() {
     const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
-    const errorMessage = useSelector(loginError)
+    const errorMessage = useSelector(authenticationApiError)
     const dispatch = useDispatch()
 
 	return (
         <React.Fragment>
-            <div className='loginComponentStyle' id="login">
-				<p className="errorTextStyle">{errorMessage}</p>
+            <div className='myFormComponent' id="login">
+				<p className="myFormErrorText">{errorMessage}</p>
 				
-				<form className='formStyle'>
+				<form>
 					<input
-						className='inputTextStyle'
+						className='myFormInputText'
 						type='text'
 						placeholder='Username'
 						value={username}
@@ -29,7 +39,7 @@ function LoginLayout() {
 					/>
 
 					<input
-						className='inputTextStyle'
+						className='myFormInputText'
 						type='password'
 						placeholder='Password'
 						value={password}
@@ -37,7 +47,7 @@ function LoginLayout() {
 					/>
 
 					<input
-						className='inputButtonStyle button'
+						className='myFormButton button'
 						type='button'
 						value='Login'
 						onClick={() => {
@@ -58,7 +68,7 @@ function LoginLayout() {
 
 					<div className='signInContainerStyle'>
 						<Link className='createAccountStyle' to="/register">Create Account</Link>
-						<div className='forgotPasswordStyle'>Forgot Password</div>
+						<Link className='forgotPasswordStyle' to="/forgot-password">Forgot Password</Link>
 					</div>
 				</form>
 			</div>
@@ -80,7 +90,7 @@ function LoggedinLayout() {
 }
 
 export default function Login(props) {
-	let loginInFlight = useSelector(loginInProgress)
+	let loginInFlight = useSelector(authenticationApiInProgress)
 	let isLoggedIn = useSelector(loggedIn)
 
 	if (loginInFlight) {

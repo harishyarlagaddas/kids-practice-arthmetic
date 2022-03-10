@@ -1,0 +1,50 @@
+.myFormComponent {
+    width: 30%;
+    margin: 0 auto;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.myFormInputText {
+	height: 36px;
+	width: 80%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.myFormButton {
+	height: 36px;
+	width: 80%;
+	font-size: x-large;
+	background: #fcc603;
+	color: #ffffff;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.myFormErrorText {
+	font-size: medium;
+	color: red;
+	margin-top: 5dp;
+}
+
+.myFormSuccessText {
+    font-size: medium;
+	color: green;
+	margin-top: 5dp;
+}
+
+@media screen and (max-width: 800px) {
+	.myFormComponent {    
+		width: 90%;
+		margin-top: 50px;
+	}
+
+	.myFormInputText {
+		font-size: 16px;
+	}
+	
+	input, select, textarea {
+		font-size: 16px;
+	}
+}

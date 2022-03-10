@@ -1,7 +1,30 @@
+<<<<<<< Updated upstream
 import { ACTION_TYPE_ADD_NEW_TEST, ACTION_TYPE_ADD_NEW_TEST_FAILURE, ACTION_TYPE_ADD_NEW_TEST_SUCCESSFUL, ACTION_TYPE_API_CALL_IN_PROGRESS, ACTION_TYPE_CLEAR_ACCOUNT_INFORMATION, ACTION_TYPE_CLEAR_STATE, ACTION_TYPE_CLEAR_TESTS, ACTION_TYPE_GET_ALL_TESTS, ACTION_TYPE_GET_ALL_TESTS_FAILURE, ACTION_TYPE_GET_ALL_TESTS_SUCCESS, ACTION_TYPE_SELECT_KID, ACTION_TYPE_UPDATE_ACCOUNT_INFORMATION } from "../constants/actionTypes"
+=======
+import { 
+    ACTION_TYPE_ADD_NEW_KID, 
+    ACTION_TYPE_ADD_NEW_KID_FAILURE, 
+    ACTION_TYPE_ADD_NEW_KID_SUCCESSFUL, 
+    ACTION_TYPE_ADD_NEW_TEST, 
+    ACTION_TYPE_ADD_NEW_TEST_FAILURE, 
+    ACTION_TYPE_ADD_NEW_TEST_SUCCESSFUL,
+    ACTION_TYPE_CHANGE_PASSWORD,
+    ACTION_TYPE_CHANGE_PASSWORD_FAILURE,
+    ACTION_TYPE_CHANGE_PASSWORD_SUCCESSFUL,
+    ACTION_TYPE_CLEAR_ACCOUNT_INFORMATION, 
+    ACTION_TYPE_CLEAR_STATE, 
+    ACTION_TYPE_CLEAR_TESTS, 
+    ACTION_TYPE_GET_ALL_TESTS, 
+    ACTION_TYPE_GET_ALL_TESTS_FAILURE, 
+    ACTION_TYPE_GET_ALL_TESTS_SUCCESS, 
+    ACTION_TYPE_SELECT_KID, 
+    ACTION_TYPE_UPDATE_ACCOUNT_INFORMATION 
+} from "../constants/actionTypes"
+>>>>>>> Stashed changes
 import { OPERATION_TYPE_ADDITION, OPERATION_TYPE_DIVISION, OPERATION_TYPE_MULTIPLICATION, OPERATION_TYPE_SUBTRACTION } from "../constants/consts"
 
 const initialState = {
+    userName: '',
     kidsInformation: [
         {
             kidsName: 'Test Kid',
@@ -25,6 +48,7 @@ export default function accountReducer(state=initialState, action) {
         case ACTION_TYPE_UPDATE_ACCOUNT_INFORMATION:
             console.log(action.response)
             return Object.assign({}, state, {
+                userName: action.response.userName,
                 kidsInformation: action.response.kidsInfo
             })
         case ACTION_TYPE_SELECT_KID:
@@ -34,6 +58,7 @@ export default function accountReducer(state=initialState, action) {
             })
         case ACTION_TYPE_CLEAR_ACCOUNT_INFORMATION:
             return Object.assign({}, state, {
+                userName: '',
                 kidsInformation: null,
                 selectedKid: null,
                 tests: [],
@@ -86,6 +111,7 @@ export default function accountReducer(state=initialState, action) {
                 tests: [],
                 lastTimeTestsRetrieved: null
             })
+
         default:
             return state
     }
@@ -106,6 +132,8 @@ export const numOfKids = state => {
        return state.account.kidsInformation.length
     }
 }
+
+export const userName = state => state.account.userName
 export const selectedKidInfo = state => state.account.selectedKid
 export const kidsInfo = state => state.account.kidsInformation
 export const apiCallInProgress = state => state.account.apiCallInProgress

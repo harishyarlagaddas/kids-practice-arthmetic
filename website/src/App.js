@@ -18,7 +18,14 @@ import MyResults from "./components/my-results/MyResults";
 import Progressbar from "./components/progress-bar/Progressbar";
 import Registration from "./components/registration/registration";
 import Title from './components/title/Title'
+<<<<<<< Updated upstream
 import { accessToken, loginInProgress } from "./reducers/loginReducer";
+=======
+import { accessToken, accessTokenValidationInProgress } from "./reducers/loginReducer";
+import AddKid from "./pages/AddKid";
+import ChangePassword from "./pages/ChangePassword";
+import ForgotPassword from "./pages/ForgotPassword";
+>>>>>>> Stashed changes
 
 function App() {
     const token = useSelector(accessToken)
@@ -36,7 +43,8 @@ function App() {
         }
     },[])
     
-    var inProgress = useSelector(loginInProgress)
+    console.log('App Component In')
+    var inProgress = useSelector(accessTokenValidationInProgress)
     
     if (inProgress) {
         return (
@@ -58,6 +66,12 @@ function App() {
                     <Route path = "/my-results" element = {<MyResults />} />
                     <Route path = "/kids-select" element = {<KidsSelect />} />
                     <Route path = "/detailed-result" element = {<DetailedResults />} />
+<<<<<<< Updated upstream
+=======
+                    <Route path = "/add-kid" element = {<AddKid />} />
+                    <Route path = "/change-password" element = {<ChangePassword />} />
+                    <Route path = "/forgot-password" element = {<ForgotPassword />} />
+>>>>>>> Stashed changes
                         {/* <Navigate to="/" /> */}
                     {/* </Route> */}
                 </Routes>

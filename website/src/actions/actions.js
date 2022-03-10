@@ -61,6 +61,78 @@ export const updateAccountInformationAction = (response) => ({
     response: response
 })
 
+<<<<<<< Updated upstream
+=======
+export const addNewKidAction = (accessToken, kidsName) => {
+    return {
+        type: actionTypes.ACTION_TYPE_ADD_NEW_KID,
+        kidsName: kidsName,
+        accessToken: accessToken
+    }
+}
+
+export const addNewKidSuccessfulAction = response => {
+    return {
+        type: actionTypes.ACTION_TYPE_ADD_NEW_KID_SUCCESSFUL,
+        response: response
+    }
+}
+
+export const addNewKidFailureAction = response => {
+    return {
+        type: actionTypes.ACTION_TYPE_ADD_NEW_KID_FAILURE,
+        response: response
+    }
+}
+
+export const changePasswordAction = (accessToken, currentPassword, newPassword, userName, useCode) => {
+    var passwordKey = 'password'
+    if (useCode) {
+        passwordKey = 'temporaryAuthCode'
+    }
+    return {
+        type: actionTypes.ACTION_TYPE_CHANGE_PASSWORD,
+        [passwordKey]: currentPassword,
+        newPassword: newPassword,
+        accessToken: accessToken,
+        userName: userName
+    }
+}
+
+export const changePasswordSuccessfulAction = response => {
+    return {
+        type: actionTypes.ACTION_TYPE_CHANGE_PASSWORD_SUCCESSFUL
+    }
+}
+
+export const changePasswordFailureAction = response => {
+    return {
+        type: actionTypes.ACTION_TYPE_CHANGE_PASSWORD_FAILURE,
+        response: response
+    }
+}
+
+export const requestTemporaryAuthCodeAction = (userName) => {
+    return {
+        type: actionTypes.ACTION_TYPE_REQUEST_TEMPORARY_AUTH_CODE,
+        userName: userName
+    }
+}
+
+export const requestTemporaryAuthCodeActionSuccessfulAction = response => {
+    return {
+        type: actionTypes.ACTION_TYPE_REQUEST_TEMPORARY_AUTH_CODE_SUCCESS
+    }
+}
+
+export const requestTemporaryAuthCodeActionFailureAction = response => {
+    return {
+        type: actionTypes.ACTION_TYPE_REQUEST_TEMPORARY_AUTH_CODE_FAILURE,
+        response: response
+    }
+}
+
+>>>>>>> Stashed changes
 export const selectKidAction = (kidInfo) => {
     return {
         type: actionTypes.ACTION_TYPE_SELECT_KID,

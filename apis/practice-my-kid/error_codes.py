@@ -23,4 +23,16 @@ USER_REGISTRATION_ERROR_MESSAGE_USER_EXISTS = 'User already exists with this use
 USER_REGISTRATION_ERROR_CODE_INVALID_KIDS_INFO = 4002
 USER_REGISTRATION_ERROR_MESSAGE_INVALID_KIDS_INFO = 'Kids information is invalid in the input..'
 
+CHANGE_PASSWORD_ERROR_MESSAGE_INCORRCT_PASSWORD = 'Current password is not correct. Please try again with correct credentials'
+CHANGE_PASSWORD_ERROR_CODE_INCORRCT_PASSWORD = 5001
+CHANGE_PASSWORD_ERROR_MESSAGE_AUTH_CODE_EXPIRED = 'Temporary auth code is expired. Please try again by clicking the forgot password'
+CHANGE_PASSWORD_ERROR_CODE_AUTH_CODE_EXPIRED = 5002
+CHANGE_PASSWORD_ERROR_MESSAGE_AUTH_CODE_INVALID = 'Your Temproray Auth code is not generated for your account. Please use the ocrrect code'
+CHANGE_PASSWORD_ERROR_CODE_AUTH_CODE_INVALID = 5003
+CHANGE_PASSWORD_SUCCESSFUL_MESSAGE = 'Successfully changed the password.'
+
+VERIFY_EMAIL_ERROR_MESSAGE_NO_ACCOUNT = 'No account associated with this email. Please try creating new account with this email'
+VERIFY_EMAIL_ERROR_CODE_NO_ACCOUNT = 6001
+VERIFY_EMAIL_SUCCESSFUL_MESSAGE = 'Successfully send the code'
+
 TEST_INSERT_SUCCESS_MESSAGE = 'Test information stored successfully'

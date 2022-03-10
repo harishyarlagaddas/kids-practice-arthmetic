@@ -4,6 +4,7 @@ from consts import *
 from datetime import datetime, timedelta
 from dynamo_keys import *
 from dynamo_utils import DynamoUtils
+from ses_utils import SESUtils
 
 
 def create_access_token(userId, refresh_count = 0) :
@@ -28,6 +29,7 @@ def get_access_token(accessToken) :
 
 def validate_access_token(accessToken) :
     item = get_access_token(accessToken=accessToken)
+<<<<<<< Updated upstream
     if not item or DYNAMO_KEY_USER_ID not in item : 
         print('validate_access_token token invalid.')
         return None
@@ -36,3 +38,21 @@ def validate_access_token(accessToken) :
     return item[DYNAMO_KEY_USER_ID]
 
 
+=======
+    return item is not None
+
+def get_user_from_access_token(accessToken) :
+    dynamoUtils = DynamoUtils()
+    item = dynamoUtils.getItem(DYNAMO_TABLE_NAME_ACCESS_TOKENS, key={DYNAMO_KEY_ACCESS_TOKEN: accessToken})
+    if not item:
+        print('get_user_from_access_token not able to get userName. May be accessToken invalid..')
+        return None
+
+    user = dynamoUtils.getItem(DYNAMO_TABLE_NAME_USERS, key={DYNAMO_KEY_USER_NAME: item[DYNAMO_KEY_USER_NAME]})
+    return user
+
+def get_user_from_user_name(userName) :
+    dynamoUtils = DynamoUtils()
+    user = dynamoUtils.getItem(DYNAMO_TABLE_NAME_USERS, key={DYNAMO_KEY_USER_NAME: userName})
+    return user
+>>>>>>> Stashed changes
