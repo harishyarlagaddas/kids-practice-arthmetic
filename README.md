@@ -1,4 +1,4 @@
-# Practice My Kid
+# Kids Practice Arthmetic
 
 A small web app for kids to practice arithmetic (addition, subtraction, multiplication,
 division). A parent registers an account, adds one or more kids, and each kid can take a
